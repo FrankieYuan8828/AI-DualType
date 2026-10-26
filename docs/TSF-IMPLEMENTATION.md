@@ -111,9 +111,11 @@ profile / category 是机器级、与位数无关，只在 64 位侧注册一次
    规避：我们不 advise thread-manager / text-edit sink——`ITfKeyEventSink` 从
    `OnKeyDown` 的 `pic` 参数直接拿 context，用不上 cookie。
 
-2. **TSF 不会把修饰键送进 key sink**。单按 Shift 想切换中/英，`OnKeyDown(VK_SHIFT)` 根本
-   不会被调用（日志里没有任何记录）。改用 `ITfKeystrokeMgr::PreserveKey` 注册
-   Ctrl+Alt+P + `OnPreservedKey` 回调，实测触发正常。
+2. **单按 Shift 切换中/英的实现**：早期曾认为 TSF 不会把修饰键送进 key sink；实际上 TSF 会在 `OnTestKeyDown` 和 `OnKeyDown` 中将 `VK_SHIFT` 传入。为了实现与系统原生输入法一致的单按 Shift 切换体验并避免误触：
+   - 在 `OnKeyDown` 中检测到纯 Shift 时标记 `shift_alone = !ctrl_alt_win_held()`；
+   - 期间若有其它字符键按下，立即置 `shift_alone = false`（防止按住 Shift 打大写字母时抬起误切换）；
+   - 在 `OnTestKeyUp` 与 `OnKeyUp` 中认领该纯 Shift 的释放事件，触发 `engine.toggle_ascii_mode()` 并通过 `flash_tip` 显示「中文模式 / ABC 英文模式」气泡；
+   - 同时保留 `ITfKeystrokeMgr::PreserveKey` 注册的 `Ctrl+Alt+P` 作为备用快捷键。
 
 3. **数据目录不能按 `current_exe()` 解析**。TSF 是进程内组件，`current_exe()` 是宿主
    （notepad.exe / powershell.exe）。而安装布局是 `<InstallDir>\bin-<hash>\mcte_tsf.dll`

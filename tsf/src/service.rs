@@ -288,8 +288,7 @@ fn activate(service: &TextService_Impl, ptim: Ref<'_, ITfThreadMgr>, tid: u32) -
         *guard = Some(sink);
     }
 
-    // 注册「保留键」：Ctrl+Alt+P 切中/英。TSF 不会把修饰键（如单按 Shift）
-    // 送进 key sink，所以模式切换必须走 PreserveKey + OnPreservedKey 这条路。
+    // 注册「保留键」：Ctrl+Alt+P 切中/英，与单按 Shift 切换互相补充。
     let preserved = reserved_key();
     let description: Vec<u16> = "切换中文/英文".encode_utf16().collect();
     unsafe {
