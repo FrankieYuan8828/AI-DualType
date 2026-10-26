@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    name: Build & Test (Windows)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc, i686-pc-windows-msvc
+
+      - name: Run Tests
+        run: cargo test --workspace --verbose
+
+      - name: Check Release Build
+        run: |
+          cargo check --workspace --release --verbose
+          cargo check -p mcte-tsf --release --target i686-pc-windows-msvc --verbose

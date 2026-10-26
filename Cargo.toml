@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = ["core", "app", "tsf", "setup"]
+
+[workspace.package]
+version = "1.0.3"
+edition = "2021"
+license = "MIT"
+authors = ["MC-TypeEnglish contributors"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+# abort: the TSF crate is a cdylib loaded into arbitrary host processes, and
+# unwinding across the COM boundary is undefined behaviour.
+panic = "abort"
+strip = true

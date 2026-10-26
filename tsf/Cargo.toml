@@ -1,0 +1,31 @@
+[package]
+name = "mcte-tsf"
+description = "TSF (Text Services Framework) text service — the native Windows input method"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+name = "mcte_tsf"
+crate-type = ["cdylib"]
+
+[[bin]]
+name = "mcte-tsf-selftest"
+path = "src/bin/selftest.rs"
+
+[dependencies]
+mcte-core = { path = "../core" }
+# #[implement] 会展开成 windows_core:: 路径，所以它必须是直接依赖
+windows-core = "0.62"
+windows = { version = "0.62", features = [
+    "Win32_Foundation",
+    "Win32_System_Com",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Registry",
+    "Win32_Security",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_TextServices",
+    "Win32_UI_WindowsAndMessaging",
+] }

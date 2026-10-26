@@ -1,0 +1,283 @@
+# MC-TypeEnglish local glossary — 本地翻译词表
+#
+# 格式 / format:  中文词<TAB>语言代码<TAB>译文
+# 语言代码必须与 config.json 里的 "targets" 一致（de / en / ja / fr / es / ko ...）。
+# 这里命中的词会立刻出现在候选窗里（1.1 / 1.2 / 1.3），不必等 AI。
+# 用户可自由增删：一行一个词条，# 开头是注释。
+#
+# 未收录的词，会在配置了 AI（config.json -> ai.enabled=true + api_key）后
+# 由后台线程异步补齐，结果自动追加到候选列表里。
+
+你好	de	hallo
+你好	en	hello
+你好	ja	こんにちは
+你好	fr	bonjour
+你好	es	hola
+你好	ko	안녕하세요
+你好	ru	привет
+
+您好	de	guten Tag
+您好	en	good day
+您好	ja	こんにちは
+
+谢谢	de	danke
+谢谢	en	thanks
+谢谢	ja	ありがとう
+谢谢	fr	merci
+谢谢	es	gracias
+谢谢	ko	감사합니다
+
+不客气	de	gern geschehen
+不客气	en	you're welcome
+不客气	ja	どういたしまして
+
+对不起	de	entschuldigung
+对不起	en	sorry
+对不起	ja	ごめんなさい
+对不起	fr	pardon
+
+再见	de	tschüss
+再见	en	goodbye
+再见	ja	さようなら
+再见	fr	au revoir
+再见	es	adiós
+再见	ko	안녕히 가세요
+
+早上好	de	guten Morgen
+早上好	en	good morning
+早上好	ja	おはようございます
+
+晚上好	de	guten Abend
+晚上好	en	good evening
+晚上好	ja	こんばんは
+
+晚安	de	gute Nacht
+晚安	en	good night
+晚安	ja	おやすみなさい
+
+请	de	bitte
+请	en	please
+请	ja	どうぞ
+
+是的	de	ja
+是的	en	yes
+是的	ja	はい
+
+不是	de	nein
+不是	en	no
+不是	ja	いいえ
+
+好的	de	okay
+好的	en	OK
+好的	ja	わかりました
+
+我	de	ich
+我	en	I
+我	ja	私
+我	fr	je
+
+你	de	du
+你	en	you
+你	ja	あなた
+你	fr	tu
+
+我们	de	wir
+我们	en	we
+我们	ja	私たち
+
+朋友	de	Freund
+朋友	en	friend
+朋友	ja	友達
+朋友	fr	ami
+
+中国	de	China
+中国	en	China
+中国	ja	中国
+中国	fr	Chine
+
+中国人	de	Chinese
+中国人	en	Chinese
+中国人	ja	中国人
+
+世界	de	Welt
+世界	en	world
+世界	ja	世界
+
+电脑	de	Computer
+电脑	en	computer
+电脑	ja	パソコン
+
+键盘	de	Tastatur
+键盘	en	keyboard
+键盘	ja	キーボード
+
+输入法	de	Eingabemethode
+输入法	en	input method
+输入法	ja	入力メソッド
+
+语言	de	Sprache
+语言	en	language
+语言	ja	言語
+
+英语	de	Englisch
+英语	en	English
+英语	ja	英語
+
+德语	de	Deutsch
+德语	en	German
+德语	ja	ドイツ語
+
+日语	de	Japanisch
+日语	en	Japanese
+日语	ja	日本語
+
+工作	de	Arbeit
+工作	en	work
+工作	ja	仕事
+
+学习	de	lernen
+学习	en	study
+学习	ja	勉強
+
+老师	de	Lehrer
+老师	en	teacher
+老师	ja	先生
+
+学生	de	Student
+学生	en	student
+学生	ja	学生
+
+时间	de	Zeit
+时间	en	time
+时间	ja	時間
+
+今天	de	heute
+今天	en	today
+今天	ja	今日
+
+明天	de	morgen
+明天	en	tomorrow
+明天	ja	明日
+
+昨天	de	gestern
+昨天	en	yesterday
+昨天	ja	昨日
+
+现在	de	jetzt
+现在	en	now
+现在	ja	今
+
+吃饭	de	essen
+吃饭	en	eat
+吃饭	ja	ご飯を食べる
+
+喝水	de	Wasser trinken
+喝水	en	drink water
+喝水	ja	水を飲む
+
+咖啡	de	Kaffee
+咖啡	en	coffee
+咖啡	ja	コーヒー
+
+我爱你	de	ich liebe dich
+我爱你	en	I love you
+我爱你	ja	愛してる
+
+恭喜	de	gratuliere
+恭喜	en	congratulations
+恭喜	ja	おめでとう
+
+新年快乐	de	frohes neues Jahr
+新年快乐	en	happy new year
+新年快乐	ja	あけましておめでとう
+
+生日快乐	de	herzlichen Glückwunsch zum Geburtstag
+生日快乐	en	happy birthday
+生日快乐	ja	お誕生日おめでとう
+
+加油	de	viel Erfolg
+加油	en	go for it
+加油	ja	頑張って
+
+多少钱	de	wie viel kostet das
+多少钱	en	how much is it
+多少钱	ja	いくらですか
+
+请问	de	entschuldigen Sie
+请问	en	excuse me
+请问	ja	すみません
+
+没问题	de	kein Problem
+没问题	en	no problem
+没问题	ja	問題ない
+
+知道	de	wissen
+知道	en	know
+知道	ja	知っている
+
+喜欢	de	mögen
+喜欢	en	like
+喜欢	ja	好き
+
+需要	de	brauchen
+需要	en	need
+需要	ja	必要
+
+帮助	de	Hilfe
+帮助	en	help
+帮助	ja	助け
+
+公司	de	Firma
+公司	en	company
+公司	ja	会社
+
+会议	de	Besprechung
+会议	en	meeting
+会议	ja	会議
+
+你知道吗	en	do you know?
+你知道吗	de	weißt du?
+你知道吗	ja	知っていますか
+你知道吗	fr	tu sais?
+你知道吗	es	¿sabes?
+
+输入窗	en	input window
+输入窗	de	Eingabefenster
+输入窗	ja	入力ウィンドウ
+
+输入窗口	en	input window
+输入窗口	de	Eingabefenster
+输入窗口	ja	入力ウィンドウ
+
+输入框	en	input box
+输入框	de	Eingabefeld
+输入框	ja	入力ボックス
+
+是吗	en	really?
+是吗	en	is that so?
+
+是么	en	is that so?
+
+是嘛	en	really?
+
+拿到了	en	got it
+拿到了	de	habe es bekommen
+那到了	en	then arrived
+那道了	en	that way
+你说	en	you say
+你说	de	du sagst
+也要	en	also want
+也要	de	will auch
+读文	en	read text
+读文	de	Text lesen
+敲入	en	type in
+敲入	de	eintippen
+吃了吗	en	have you eaten?
+好呢	en	doing well
+好嘛	en	fine then
+好得	en	so good
+好啊	en	sure!
+走了	en	left
+到了	en	arrived
+算了吧	en	forget it
+谢谢你了	en	thank you

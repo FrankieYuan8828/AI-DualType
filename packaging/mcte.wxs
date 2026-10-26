@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MC-TypeEnglish 的 MSI 安装包定义（WiX v4+ 语法，用 WiX 7 构建）。
+
+  分工：
+    * MSI 负责铺文件、开始菜单、卸载项，以及 HKCU 里的「输入法列表」条目和
+      开机启动项（Registry 组件由 MSI 写进发起安装的那个用户的注册表）；
+    * COM/TSF 注册 MSI 做不了，交给 Register.ps1 以自定义动作执行
+      （regsvr32 只写 HKLM，用 SYSTEM 权限的 deferred 动作正好）。
+
+  构建： tools\build_msi.ps1
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+  <Package Name="MC-TypeEnglish"
+           Manufacturer="FrankieYuan"
+           Version="1.0.3"
+           UpgradeCode="E9305862-3C47-4032-BB2C-85CACA68C83D"
+           Scope="perMachine"
+           Compressed="yes"
+           InstallerVersion="500">
+
+    <SummaryInformation Description="MC-TypeEnglish 拼音 + 多语译文输入法" />
+
+    <MajorUpgrade Schedule="afterInstallInitialize"
+                  DowngradeErrorMessage="已安装更高版本的 MC-TypeEnglish，请先卸载。" />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLDIR" Name="MC-TypeEnglish">
+        <Directory Id="DATADIR" Name="data" />
+        <Directory Id="TOOLSDIR" Name="tools" />
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="AppMenuFolder" Name="MC-TypeEnglish" />
+    </StandardDirectory>
+
+    <Feature Id="Main" Title="MC-TypeEnglish 输入法" Level="1">
+      <ComponentRef Id="MainExe" />
+      <ComponentRef Id="TextService" />
+      <ComponentRef Id="Tools" />
+      <ComponentRef Id="DataFiles" />
+      <ComponentRef Id="Docs" />
+      <ComponentRef Id="UserSettings" />
+      <ComponentRef Id="StartMenuShortcuts" />
+    </Feature>
+
+    <!-- 钩子版主程序 -->
+    <Component Id="MainExe" Directory="INSTALLDIR" Bitness="always64" Guid="0E760B8D-E9EB-49CB-AC28-51DEB9961B16">
+      <File Id="mcteExe" Source="$(var.DistDir)\mcte.exe" KeyPath="yes" />
+      <File Id="mcteIco" Source="$(var.DistDir)\mcte.ico" />
+    </Component>
+
+    <!-- TSF 文本服务：64 位 + 32 位，外加注册脚本 -->
+    <Component Id="TextService" Directory="INSTALLDIR" Bitness="always64" Guid="37525AE1-7F2E-4243-BA47-38FCE7372591">
+      <File Id="tsfX64" Source="$(var.DistDir)\mcte_tsf.dll" KeyPath="yes" />
+      <File Id="tsfX86" Source="$(var.DistDir)\mcte_tsf_x86.dll" />
+      <File Id="registerPs1" Source="$(var.RepoDir)\packaging\Register.ps1" />
+    </Component>
+
+    <!-- 自检工具 -->
+    <Component Id="Tools" Directory="TOOLSDIR" Bitness="always64" Guid="C4A7E1D2-58B3-4F6A-9E27-3B8D41F0A6C5">
+      <File Id="selftestExe" Source="$(var.DistDir)\tools\mcte-tsf-selftest.exe" KeyPath="yes" />
+    </Component>
+
+    <!-- 词库 -->
+    <Component Id="DataFiles" Directory="DATADIR" Bitness="always64" Guid="9AB5E665-0C3A-4BDE-BDFD-7A61E15A4478">
+      <File Id="dictTxt" Source="$(var.DistDir)\data\dict.txt" KeyPath="yes" />
+      <File Id="dictEnTsv" Source="$(var.DistDir)\data\dict_en.tsv" />
+      <File Id="en2zhTsv" Source="$(var.DistDir)\data\en2zh.tsv" />
+      <File Id="glossaryTsv" Source="$(var.DistDir)\data\glossary.tsv" />
+    </Component>
+
+    <!-- 说明文件 -->
+    <Component Id="Docs" Directory="INSTALLDIR" Bitness="always64" Guid="7F2B9C31-6E4A-4D18-A5C9-2D8E60B1F473">
+      <File Id="readmeMd" Source="$(var.DistDir)\README.md" />
+      <File Id="licenseTxt" Source="$(var.DistDir)\LICENSE" KeyPath="yes" />
+    </Component>
+
+    <!--
+      用户级设置：
+        * 把输入法加进「中文(简体)」的输入法列表（Win+Space 才会出现）；
+        * 登录后自动启动终端模式，让 cmd / PowerShell 里也能用。
+    -->
+    <Component Id="UserSettings" Directory="INSTALLDIR" Bitness="always64" Guid="93B89593-21E3-419A-B92F-29C23BE8F678">
+      <RegistryKey Root="HKCU" Key="Control Panel\International\User Profile\zh-Hans-CN">
+        <RegistryValue Type="integer"
+                       Name="0804:{7C3E0C11-5F6A-4E52-9B2C-A1D47B2E9F31}{B3D2F0A4-6C81-4E17-9E45-2D8A9C6B4F72}"
+                       Value="1"
+                       KeyPath="yes" />
+      </RegistryKey>
+      <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run">
+        <RegistryValue Type="string"
+                       Name="MC-TypeEnglish Terminal"
+                       Value="&quot;[INSTALLDIR]mcte.exe&quot; --terminal-only" />
+      </RegistryKey>
+    </Component>
+
+    <!-- 开始菜单 -->
+    <Component Id="StartMenuShortcuts" Directory="AppMenuFolder" Guid="1B5E3C44-9A2D-4C77-8F10-6D3A1C5B7E92">
+      <Shortcut Id="ConfigShortcut"
+                Name="配置文件夹"
+                Target="[System64Folder]WindowsPowerShell\v1.0\powershell.exe"
+                Arguments="-NoProfile -Command &quot;explorer $env:APPDATA\MC-TypeEnglish&quot;"
+                Description="配置、用户词库与日志" />
+      <Shortcut Id="UninstallShortcut"
+                Name="卸载 MC-TypeEnglish"
+                Target="[System64Folder]msiexec.exe"
+                Arguments="/x [ProductCode]" />
+      <RemoveFolder Id="RemoveAppMenuFolder" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\MC-TypeEnglish" Name="Shortcuts" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <!-- 注册 COM/TSF（regsvr32 只写 HKLM，用 SYSTEM 权限的 deferred 动作） -->
+    <CustomAction Id="RegisterTsf"
+                  Directory="INSTALLDIR"
+                  Execute="deferred"
+                  Impersonate="no"
+                  Return="ignore"
+                  ExeCommand="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -ExecutionPolicy Bypass -File &quot;[INSTALLDIR]Register.ps1&quot; -InstallDir &quot;[INSTALLDIR].&quot;" />
+
+    <CustomAction Id="UnregisterTsf"
+                  Directory="INSTALLDIR"
+                  Execute="deferred"
+                  Impersonate="no"
+                  Return="ignore"
+                  ExeCommand="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -ExecutionPolicy Bypass -File &quot;[INSTALLDIR]Register.ps1&quot; -InstallDir &quot;[INSTALLDIR].&quot; -Unregister" />
+
+    <!--
+      装完直接拉起常驻进程。
+      注意必须用 `cmd /c start` 让命令立刻返回：自定义动作会等被启动的进程退出，
+      直接启动 mcte.exe（常驻不退出）会让整个安装卡在最后一步，后续升级报 1618。
+    -->
+    <CustomAction Id="StartApp"
+                  Directory="INSTALLDIR"
+                  Execute="immediate"
+                  Return="ignore"
+                  ExeCommand="&quot;[System64Folder]cmd.exe&quot; /c start &quot;&quot; &quot;[INSTALLDIR]mcte.exe&quot; --terminal-only" />
+
+    <InstallExecuteSequence>
+      <Custom Action="UnregisterTsf" Before="RemoveFiles" Condition="(REMOVE=&quot;ALL&quot;) OR (UPGRADINGPRODUCTCODE)" />
+      <Custom Action="RegisterTsf" After="InstallFiles" Condition="NOT (REMOVE=&quot;ALL&quot;)" />
+      <Custom Action="StartApp" After="InstallFinalize" Condition="NOT (REMOVE=&quot;ALL&quot;)" />
+    </InstallExecuteSequence>
+
+  </Package>
+</Wix>

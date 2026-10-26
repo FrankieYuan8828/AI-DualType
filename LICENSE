@@ -1,0 +1,37 @@
+MIT License
+
+Copyright (c) 2026 MC-TypeEnglish contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Third-party data bundled with this project keeps its own licence:
+
+- **CC-CEDICT** (https://cc-cedict.org/, CC BY-SA 4.0) is the source of
+  `data/dict_en.tsv` (Chinese->English glosses) and `data/en2zh.tsv`
+  (the reverse index derived from those glosses). Files generated from it are
+  therefore also distributed under CC BY-SA 4.0. Attribution: CC-CEDICT
+  community, compiled from CC-CEDICT / Hanping / other free dictionaries.
+
+- data/dict.txt is generated from rime-essay (Apache-2.0 / CC-BY),
+  phrase-pinyin-data (MIT), pinyin-data (MIT) and OpenCC TSCharacters
+  (Apache-2.0). See tools/build_dict.py for the exact inputs.
+- The analysed upstream project (TypeAnything, MIT client + GPL Weasel) is
+  NOT redistributed here; only a written reverse-engineering report.

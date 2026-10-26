@@ -1,0 +1,25 @@
+# Rust build targets
+/target/
+
+# Local distribution and release packaging outputs
+# (Release assets are distributed via GitHub Releases)
+/dist/
+
+# Wix and installer intermediate files
+*.wixobj
+*.wixpdb
+
+# Logs, temporary files, crash dumps
+*.log
+*.tmp
+*.bak
+*.dmp
+screenshots/*.txt
+
+# OS / Editor specific files
+.vs/
+.idea/
+.vscode/
+*.user
+Thumbs.db
+Desktop.ini

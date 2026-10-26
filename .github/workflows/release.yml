@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build Installer and Publish Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc, i686-pc-windows-msvc
+
+      - name: Install WiX Toolset
+        run: dotnet tool install --global wix
+
+      - name: Extract Version from Tag
+        id: get_version
+        shell: pwsh
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          $ver = $tag -replace '^v',''
+          echo "VERSION=$ver" >> $env:GITHUB_ENV
+          echo "TAG=$tag" >> $env:GITHUB_ENV
+
+      - name: Build MSI & Setup Package
+        shell: pwsh
+        run: |
+          powershell -ExecutionPolicy Bypass -File tools\build_msi.ps1 -Version $env:VERSION
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: MC-TypeEnglish ${{ env.TAG }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/v${{ env.VERSION }}/MC-TypeEnglish-${{ env.VERSION }}.msi
+            dist/v${{ env.VERSION }}/MC-TypeEnglish-Setup-${{ env.VERSION }}.exe
+            dist/v${{ env.VERSION }}/MC-TypeEnglish-Setup.exe

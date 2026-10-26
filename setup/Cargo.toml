@@ -1,0 +1,19 @@
+[package]
+name = "mcte-setup"
+description = "MC-TypeEnglish single-file installer (self-extracting, self-elevating)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "mcte-setup"
+path = "src/main.rs"
+
+[dependencies]
+windows = { version = "0.62", features = [
+    "Win32_Foundation",
+    "Win32_System_Console",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+] }
