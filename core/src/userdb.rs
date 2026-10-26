@@ -140,6 +140,36 @@ impl UserDb {
         self.prune();
     }
 
+    /// 连续输入组词学习（自造词）：记录由连续单字/词拼接而成的词组。
+    pub fn record_phrase(&mut self, composition: &str, phrase: &str) {
+        if composition.is_empty() || phrase.is_empty() {
+            return;
+        }
+        let now = now_secs();
+        let stat = self.words.entry(phrase.to_string()).or_default();
+        stat.count = stat.count.saturating_add(1);
+        stat.last_used = now;
+
+        let bucket = self.spellings.entry(composition.to_string()).or_default();
+        if !bucket.iter().any(|w| w == phrase) {
+            if bucket.len() >= MAX_SPELLINGS_PER_KEY {
+                bucket.remove(0);
+            }
+            bucket.push(phrase.to_string());
+        }
+        self.dirty = true;
+        self.prune();
+    }
+
+    /// 查询上一个词到下一个词的二元转移次数（O(1) 无额外内存分配）。
+    pub fn bigram_count(&self, prev: &str, next: &str) -> u32 {
+        self.bigrams
+            .get(prev)
+            .and_then(|targets| targets.get(next))
+            .copied()
+            .unwrap_or(0)
+    }
+
     /// AI 兜底学到的词：直接进 spellings，同时给一个很小的初值计数。
     pub fn learn_spelling(&mut self, composition: &str, words: &[String]) {
         if words.is_empty() {
@@ -325,5 +355,21 @@ mod tests {
         let mut db = UserDb::default();
         db.record_commit("baogao", "报告", Some("报告"));
         assert_eq!(db.bigram_pairs(), 0);
+    }
+
+    #[test]
+    fn records_learned_phrases_and_bigram_counts() {
+        let mut db = UserDb::default();
+        db.record_commit("zengya", "增压", None);
+        db.record_commit("qi", "器", Some("增压"));
+        db.record_phrase("zengyaqi", "增压器");
+
+        assert_eq!(db.learned("zengyaqi"), ["增压器".to_string()]);
+        assert_eq!(db.bigram_count("增压", "器"), 1);
+        assert_eq!(db.bigram_count("增压", "其"), 0);
+
+        let now = now_secs();
+        let score = db.score(LEARNED_BASE_SCORE as u32, "增压器", None, now);
+        assert!(score < LEARNED_BASE_SCORE, "学习到的词组应具有更优的打分");
     }
 }

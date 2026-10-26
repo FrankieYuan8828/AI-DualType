@@ -411,6 +411,9 @@ unsafe extern "system" fn keyboard_proc(code: i32, wparam: WPARAM, lparam: LPARA
             if app.window.is_showing_tip() {
                 app.window.hide();
             }
+            if matches!(key, Key::Backspace | Key::Left | Key::Right | Key::Up | Key::Down) {
+                app.engine.clear_recent_commits();
+            }
             false
         }
         Outcome::Consumed => {

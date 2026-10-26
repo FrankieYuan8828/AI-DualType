@@ -29,7 +29,7 @@ use windows::Win32::UI::TextServices::{
 
 use mcte_core::config::{self, Config};
 use mcte_core::dict::Dict;
-use mcte_core::engine::{Engine, Outcome};
+use mcte_core::engine::{Engine, Key, Outcome};
 use mcte_core::glossary::Glossary;
 use mcte_core::keymap;
 use mcte_core::logging::log;
@@ -506,7 +506,14 @@ impl ITfKeyEventSink_Impl for KeySink_Impl {
                     return Ok(FALSE);
                 };
                 match engine.handle(key) {
-                    Outcome::Ignore => {}
+                    Outcome::Ignore => {
+                        if matches!(
+                            key,
+                            Key::Backspace | Key::Left | Key::Right | Key::Up | Key::Down
+                        ) {
+                            engine.clear_recent_commits();
+                        }
+                    }
                     Outcome::Consumed => eaten = true,
                     Outcome::Commit(text) => {
                         eaten = true;

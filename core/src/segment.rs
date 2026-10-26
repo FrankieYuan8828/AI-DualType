@@ -38,6 +38,16 @@ pub struct Segmentation {
 
 /// 把 `pinyin` 拆成最多 `k` 条候选；没有可行切分时返回空。
 pub fn segment(dict: &Dict, pinyin: &str, k: usize) -> Vec<Segmentation> {
+    segment_with_userdb(dict, None, pinyin, k)
+}
+
+/// 支持结合用户词库（已学词 + 二元转移共现加权）的拼音分词
+pub fn segment_with_userdb(
+    dict: &Dict,
+    userdb: Option<&crate::userdb::UserDb>,
+    pinyin: &str,
+    k: usize,
+) -> Vec<Segmentation> {
     let chars: Vec<char> = pinyin.chars().collect();
     let n = chars.len();
     if n < 2 || k == 0 {
@@ -50,11 +60,18 @@ pub fn segment(dict: &Dict, pinyin: &str, k: usize) -> Vec<Segmentation> {
         if let Some(hit) = cache.get(key) {
             return hit.clone();
         }
-        let found: Vec<(String, u32)> = dict
-            .top_entries(key, 8)
+        let mut found: Vec<(String, u32)> = dict
+            .top_entries(key, 16)
             .into_iter()
             .map(|(word, rank)| (word.to_string(), rank))
             .collect();
+        if let Some(userdb) = userdb {
+            for learned_word in userdb.learned(key) {
+                if !found.iter().any(|(w, _)| w == learned_word) {
+                    found.insert(0, (learned_word.clone(), 1000));
+                }
+            }
+        }
         cache.insert(key.to_string(), found.clone());
         found
     };
@@ -76,14 +93,24 @@ pub fn segment(dict: &Dict, pinyin: &str, k: usize) -> Vec<Segmentation> {
                 continue;
             }
             for (word, rank) in entries {
-                let cost = (rank as f64 + 1.0).ln() + WORD_PENALTY;
+                let base_cost = (rank as f64 + 1.0).ln() + WORD_PENALTY;
                 for (base, words) in &tails {
                     if words.len() >= MAX_WORDS {
                         continue;
                     }
+                    let mut transition_bonus = 0.0;
+                    if let Some(userdb) = userdb {
+                        if let Some(prev_word) = words.last() {
+                            let count = userdb.bigram_count(prev_word, &word);
+                            if count > 0 {
+                                transition_bonus = (count as f64 + 1.0).ln() * 3.5;
+                            }
+                        }
+                    }
+                    let step_cost = (base_cost - transition_bonus).max(0.1);
                     let mut next = words.clone();
                     next.push(word.clone());
-                    push_best(&mut paths[end], base + cost, next, k);
+                    push_best(&mut paths[end], base + step_cost, next, k);
                 }
             }
         }
@@ -165,5 +192,22 @@ mod tests {
     #[test]
     fn respects_k_limit() {
         assert!(segment(&dict(), "bukeyitihuan", 2).len() <= 2);
+    }
+
+    #[test]
+    fn bigram_boosts_segmentation_ranking() {
+        let mut userdb = crate::userdb::UserDb::default();
+        userdb.record_commit("buke", "不可", None);
+        userdb.record_commit("tihuan", "替换", Some("不可"));
+
+        let without = segment(&dict(), "buketihuan", 5);
+        let with = segment_with_userdb(&dict(), Some(&userdb), "buketihuan", 5);
+
+        assert!(!without.is_empty());
+        assert!(!with.is_empty());
+        // 有 bigram 关联的切分成本应降低
+        let cost_without = without.iter().find(|s| s.text == "不可替换").map(|s| s.cost).unwrap();
+        let cost_with = with.iter().find(|s| s.text == "不可替换").map(|s| s.cost).unwrap();
+        assert!(cost_with < cost_without, "共现二元应降低切分代价");
     }
 }

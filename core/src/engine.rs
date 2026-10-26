@@ -66,6 +66,13 @@ pub struct Row {
     pub lang: String,
 }
 
+#[derive(Debug, Clone)]
+struct CommitHistory {
+    text: String,
+    composition: String,
+    time: u64,
+}
+
 #[derive(Clone)]
 pub struct Engine {
     dict: Dict,
@@ -90,6 +97,8 @@ pub struct Engine {
     userdb: UserDb,
     /// 上一个上屏的词，用于联想加权。
     last_committed: Option<String>,
+    /// 连续输入组词学习（记录最近连续输入的词与拼音）。
+    recent_commits: Vec<CommitHistory>,
     /// 引号开/关状态：`"` → “ 再按 → ”（和系统输入法一致）
     quote_double_open: bool,
     quote_single_open: bool,
@@ -121,6 +130,7 @@ impl Engine {
             ai_requested: Vec::new(),
             userdb,
             last_committed: None,
+            recent_commits: Vec::new(),
             quote_double_open: true,
             quote_single_open: true,
             page: 0,
@@ -147,7 +157,14 @@ impl Engine {
 
     /// 丢弃全部学习记录（自检/测试用，不写盘）。
     pub fn clear_userdb(&mut self) {
+        self.clear_recent_commits();
         self.userdb = UserDb::default();
+        self.last_committed = None;
+    }
+
+    /// 清空连续输入的组词上下文（失焦、切换模式、输入标点或回车时调用）。
+    pub fn clear_recent_commits(&mut self) {
+        self.recent_commits.clear();
         self.last_committed = None;
     }
 
@@ -215,6 +232,7 @@ impl Engine {
     pub fn set_ascii_mode(&mut self, on: bool) {
         self.ascii_mode = on;
         if on {
+            self.clear_recent_commits();
             self.reset();
         }
     }
@@ -345,14 +363,17 @@ impl Engine {
                     let text = self.composition.clone();
                     let committed = format!("{text}{c}");
                     self.record_learning(&committed);
+                    self.clear_recent_commits();
                     self.reset();
                     return Outcome::Commit(committed);
                 }
                 let text = self.selected_text().unwrap_or_else(|| self.composition.clone());
                 self.record_learning(&text);
+                self.clear_recent_commits();
                 self.reset();
                 return Outcome::Commit(format!("{text}{mapped}"));
             }
+            self.clear_recent_commits();
             return Outcome::Commit(mapped);
         }
 
@@ -478,6 +499,7 @@ impl Engine {
         if !self.is_composing() {
             return Outcome::Ignore;
         }
+        self.clear_recent_commits();
         let raw = self.composition.clone();
         self.reset();
         Outcome::Commit(raw)
@@ -529,6 +551,7 @@ impl Engine {
 
     /// 抛弃当前这次输入（焦点切换、失焦时用），不产生任何上屏。
     pub fn abort(&mut self) {
+        self.clear_recent_commits();
         self.reset();
     }
 
@@ -656,8 +679,15 @@ impl Engine {
 
         // 长串拆解（组句）：`bukeyitihuan` → 「不可以替换」+「不可以/替换」等拆法。
         // 这条解决了「连续 3~6 字拼音没有候选」的老问题。
-        if looks_latin && self.composition.len() >= 4 {
-            for seg in crate::segment::segment(&self.dict, &self.composition, 4) {
+        // 参数 seg_k 取 max_parents 与 2 倍页大小的最大值，保证联想候选词能占满完整页面（至少 7 个选项并可翻页）。
+        if looks_latin && self.composition.len() >= 3 {
+            let seg_k = self.cfg.max_parents.max(self.cfg.page_size * 2);
+            for seg in crate::segment::segment_with_userdb(
+                &self.dict,
+                Some(&self.userdb),
+                &self.composition,
+                seg_k,
+            ) {
                 if seg.words.len() < 2 {
                     continue; // 整串单词交给精确匹配
                 }
@@ -744,9 +774,9 @@ impl Engine {
     /// 刻意用空格而不是 ` / ` 拼接：读得通就像一句，读不通也会被后台免费网页
     /// 翻译补上的真正整句译文盖过去。
     fn composed_translation(&self, phrase: &str) -> Option<String> {
-        let parts = crate::segment::segment(&self.dict, &self.composition, 1);
-        let segmentation = parts.first()?;
-        if segmentation.text != phrase || segmentation.words.len() < 2 {
+        let parts = crate::segment::segment(&self.dict, &self.composition, 8);
+        let segmentation = parts.iter().find(|s| s.text == phrase)?;
+        if segmentation.words.len() < 2 {
             return None;
         }
         let english_only = ["en".to_string()];
@@ -912,7 +942,7 @@ impl Engine {
         }
     }
 
-    /// 学习这一次上屏：词频、上下文共现、生僻词编码。
+    /// 学习这一次上屏：词频、上下文共现、生僻词编码，以及连续输入自动组词学习。
     ///
     /// 只记中文（译文子候选、纯标点不进用户词库），并且只在确实有拼音composition
     /// 的时候记 —— 这样 `spellings` 里的 key 一定是用户真的敲过的拼音。
@@ -921,12 +951,53 @@ impl Engine {
             return;
         }
         if !is_chinese_text(text) {
+            self.clear_recent_commits();
             return;
         }
+        let now = now_secs();
         let prev = self.last_committed.clone();
         self.userdb
             .record_commit(&self.composition, text, prev.as_deref());
         self.last_committed = Some(text.to_string());
+
+        // 连续输入组词学习（例如：输入 zengya=增压，紧接着连续输入 qi=器 -> 自动学习增压器/zengyaqi）
+        if self.composition.chars().all(|c| c.is_ascii_lowercase()) {
+            // 剔除超时（例如超过 15 秒未连续输入）的历史
+            if let Some(last) = self.recent_commits.last() {
+                if now.saturating_sub(last.time) > 15 {
+                    self.recent_commits.clear();
+                }
+            }
+
+            // 对以当前上屏词结尾的所有连续窗口进行拼接并学成新词组（长度 2~8 汉字）
+            for start in 0..self.recent_commits.len() {
+                let slice = &self.recent_commits[start..];
+                let mut combined_text = String::new();
+                let mut combined_comp = String::new();
+                for item in slice {
+                    combined_text.push_str(&item.text);
+                    combined_comp.push_str(&item.composition);
+                }
+                combined_text.push_str(text);
+                combined_comp.push_str(&self.composition);
+
+                let char_count = combined_text.chars().count();
+                if char_count >= 2 && char_count <= 8 && combined_comp.len() <= 32 {
+                    self.userdb.record_phrase(&combined_comp, &combined_text);
+                }
+            }
+
+            self.recent_commits.push(CommitHistory {
+                text: text.to_string(),
+                composition: self.composition.clone(),
+                time: now,
+            });
+            if self.recent_commits.len() > 4 {
+                self.recent_commits.remove(0);
+            }
+        } else {
+            self.recent_commits.clear();
+        }
     }
 
     /// 生僻词兜底：当前拼音在词库里一个候选都没有（也没学过），要不要问 AI。
@@ -1457,5 +1528,74 @@ mod tests {
             .map(|r| r.text.as_str())
             .collect();
         assert_eq!(children, vec!["danke"]);
+    }
+
+    #[test]
+    fn consecutive_commit_learns_phrase_and_provides_seven_candidates() {
+        let dict = Dict::parse(
+            "zengya\t增压\t34887\n\
+             qi\t其\t411\n\
+             qi\t起\t990\n\
+             qi\t期\t3149\n\
+             qi\t气\t3242\n\
+             qi\t器\t4403\n\
+             qi\t七\t4602\n\
+             qi\t齐\t6612\n\
+             qi\t奇\t8772\n",
+        );
+        let mut e = Engine::new(dict, Glossary::default(), Config::default());
+
+        // 优化验证 1：未自造词前，组句拆解也必须提供足量候选（至少满 7 个），且包含器
+        type_str(&mut e, "zengyaqi");
+        let parent_rows: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 0)
+            .map(|r| r.text.clone())
+            .collect();
+        assert_eq!(parent_rows.len(), 7, "第一页必须有 7 个候选，实际为: {parent_rows:?}");
+        assert!(
+            parent_rows.contains(&"增压器".to_string()),
+            "候选池应包含增压器，实际为: {parent_rows:?}"
+        );
+        e.abort();
+
+        // 优化验证 2：连续输入 zengya=增压，然后连续输入 qi=器
+        type_str(&mut e, "zengya");
+        assert_eq!(e.handle(Key::Space), Outcome::Commit("增压".to_string()));
+
+        type_str(&mut e, "qi");
+        // 选中第 5 项「器」
+        e.handle(Key::Char('5'));
+        assert_eq!(e.handle(Key::Space), Outcome::Commit("器".to_string()));
+
+        // 现在再次输入 zengyaqi，输入法应已学习并直接推荐「增压器」作为第 1 候选！
+        type_str(&mut e, "zengyaqi");
+        let new_parents: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 0)
+            .map(|r| r.text.clone())
+            .collect();
+        assert_eq!(new_parents.len(), 7, "第一页保持 7 个候选");
+        assert_eq!(new_parents[0], "增压器", "连续学习后「增压器」应成为首选");
+    }
+
+    #[test]
+    fn punctuation_breaks_consecutive_phrase_learning() {
+        let dict = Dict::parse(
+            "zengya\t增压\t34887\n\
+             qi\t器\t4403\n",
+        );
+        let mut e = Engine::new(dict, Glossary::default(), Config::default());
+
+        type_str(&mut e, "zengya");
+        assert_eq!(e.handle(Key::Char(',')), Outcome::Commit("增压，".to_string()));
+
+        type_str(&mut e, "qi");
+        assert_eq!(e.handle(Key::Space), Outcome::Commit("器".to_string()));
+
+        // 被标点打断后，不应学成「增压器」
+        assert!(e.userdb.learned("zengyaqi").is_empty());
     }
 }
