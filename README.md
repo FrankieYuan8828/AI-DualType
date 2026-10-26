@@ -115,54 +115,57 @@ dist\MC-TypeEnglish\
 
 ---
 
-## 3. 配置
+## 3. 配置说明
 
-`%APPDATA%\MC-TypeEnglish\config.json`（钩子版在托盘菜单点「重新加载配置与词库」即生效；
-TSF 版下次激活生效）
+本项目秉承轻量无干扰的原则，配置分为 **「候选窗快速设置」** 和 **「高级 JSON 配置文件」**：
+
+### 3.1 候选窗右上角「设置」按钮（界面操作）
+
+候选窗右上角的 **设置** 按钮是一个即点即选的轻量弹窗，**专用于切换第二跟随语言**：
+- **英文永远固定跟随**，在此列表中你可以选择额外跟随的一种语言（德语 / 法语 / 日语 / 韩语 / 俄语 / 西班牙语 / 意大利语 / 葡萄牙语），或选择「不额外语言」。
+- 选中的语言会作为英文下方的一行出现在候选卡片中：
+  ```text
+  1 你好
+    英文 hello
+    德语 hallo        ← 这里就是你选的那一种
+  ```
+- **点击即生效**，同时自动保存回 `config.json`。
+> 💡 *注：为了保证输入法界面的极致纯粹与零干扰，该界面只保留语种单选，不提供多余的输入框或复杂表单。*
+
+### 3.2 高级配置文件（`config.json`）
+
+完整的运行参数保存在 `%APPDATA%\MC-TypeEnglish\config.json` 中（可用记事本等任意文本编辑器直接修改）：
+- 钩子版：托盘菜单点击「重新加载配置与词库」即生效；
+- TSF 版：下次聚焦窗口激活时生效。
 
 ```json
 {
-  "extra_language": "de",          // 除英文外再跟随一种语言；null = 只跟英文
-  "toggle_hotkey": "Ctrl+Alt+P",
+  "extra_language": "de",          // 除英文外再跟随一种语言；null = 只跟英文（可由右上角设置自动写入）
+  "toggle_hotkey": "Ctrl+Alt+P",   // 备用切换热键
   "max_parents": 9,                // 一级候选数（上限 9，对应数字键）
   "max_children": 4,               // 每个候选最多几行译文
-  "web_translate": true,           // 用免费网页翻译补译文（不需要 API key）
+  "web_translate": true,           // 用免费公开翻译端点补全生词译文（免配置、免 API key）
   "prefix_search": true,           // 边打边匹配前缀（nih -> 你好）
-  "learn_enabled": true,           // 自学习：词频 / 联想 / 生僻词编码
-  "ai_spell_fallback": true,       // 词库查不到时用 AI 兜底并记进用户词库
+  "learn_enabled": true,           // 自学习开关：词频 / 联想 / 生僻词记忆
+  "ai_spell_fallback": true,       // 词库查不到时用 AI 兜底并记进用户词库（需开启下方 AI）
   "ai": {
-    "enabled": false,              // 可选：配置 API key 后改用 AI（更准）
-    "host": "api.deepseek.com",    // 任意 OpenAI Chat Completions 兼容服务
+    "enabled": false,              // 【可选高级功能】默认 false 纯离线运行，无需任何 API Key
+    "host": "api.deepseek.com",    // 兼容任何 OpenAI 规范的接口端点
     "path": "/v1/chat/completions",
     "model": "deepseek-chat",
-    "api_key": ""
+    "api_key": ""                  // 需手动在 json 文件中填写（输入法界面不提供也不收集密钥输入框）
   }
 }
 ```
 
-### 跟随语言：右上角「设置」
+### 3.3 译文与翻译来源
 
-候选窗右上角有个 **设置** 按钮，点开是语言列表：**英文永远跟随**，你可以再选一种
-（德语 / 法语 / 日语 / 韩语 / 俄语 / 西班牙语 / 意大利语 / 葡萄牙语），也可以选
-「不额外语言」。选中的语言会作为英文下面的一行出现在每张卡片里：
+输入法的译文按以下优先级获取：
+1. **本地离线词表（首选，秒出）**：`data/glossary.tsv` 手写表 + CC-CEDICT 5.7 万词中英对照；
+2. **免费网页公开翻译（兜底）**：本地没有收录的词，后台异步通过公开公共翻译端点补全（结果内存缓存 6 小时，免配置、不需要 API Key）；
+3. **可选 AI 模型（进阶）**：若用户自行在 `config.json` 中开启了 `ai.enabled` 并配置了 `api_key`，则优先由大模型提供整句精细翻译与生僻词补全。
 
-```
-1 你好
-  英文 hello
-  德语 hallo        ← 这里就是你选的那一种
-```
-
-选中即生效，同时写回 `config.json` 的 `extra_language`。
-
-### 译文从哪来
-
-1. 本地词表（`data/glossary.tsv` 手写 + CC-CEDICT 的 5.7 万词中英对照）；
-2. 词表没有的，用**免费的公开翻译接口**（Google 的公开端点，MyMemory 兜底）补，
-   结果在内存里缓存 6 小时；
-3. 想要更准的整句翻译，可以在 `ai` 里填 API key，程序会优先用 AI。
-
-网络请求走**系统代理**（读 `Internet 选项 → 局域网设置`，也认 `HTTPS_PROXY`），
-超时 4 秒，失败就安静放弃——绝不会卡住打字。
+网络请求走系统代理（认系统局域网设置及 `HTTPS_PROXY`），4 秒超时静默放弃，**绝对不会阻塞打字与上屏**。
 
 ### 装完在 Win+Space 里看不到？
 
