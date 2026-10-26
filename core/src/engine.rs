@@ -605,14 +605,14 @@ impl Engine {
                 .composition
                 .chars()
                 .all(|c| c.is_ascii_lowercase() || c == '\'');
-        // 这次输入到底是拼音还是英文：词库里有它的匹配才算拼音。
-        let pinyin_input = looks_latin && self.composition_looks_like_pinyin();
-        if looks_latin {
+        // 这次输入是否是词库中的精确拼音音节/词。只有非精确拼音时才启用英文反查，
+        // 彻底避免像 deng（等/灯/登/邓）这样常用拼音被反查词（邓小平、邓世昌等）霸屏冲掉。
+        let is_exact_pinyin = looks_latin && !self.dict.lookup(&self.composition, 1, false).is_empty();
+        if looks_latin && (!is_exact_pinyin || pool.is_empty()) {
             for (word, rank, weight) in self
                 .glossary
                 .reverse_lookup(&self.composition, self.cfg.max_parents)
             {
-                // 同一个词可能既来自拼音又来自反查（`beijing` 就是合法拼音）：
                 // weight 是该英文词在中文词释义中的次序，越大越能代表主意（pos 0 为 3，pos 1 为 2）
                 let score = self
                     .userdb
@@ -628,8 +628,8 @@ impl Engine {
                 pool.push((word, score));
             }
 
-            // 英文联想词模式：当输入为非拼音或词库中缺少有效拼音候选时，推荐英文联想词候选
-            if !pinyin_input || pool.is_empty() {
+            // 英文联想词模式：当输入为非精确拼音或词库中缺少有效拼音候选时，推荐英文联想词候选
+            if !is_exact_pinyin || pool.is_empty() {
                 let assocs = self
                     .glossary
                     .english_associations(&self.composition, self.cfg.max_parents);
@@ -701,12 +701,12 @@ impl Engine {
         for (idx, (word, _score)) in slice.iter().enumerate() {
             let label = (idx + 1).to_string();
             let mut children = self.children_for(word);
-            if looks_latin && !pinyin_input {
+            if looks_latin && !is_exact_pinyin {
                 // 打的是英文（`hello`）：下面再挂一行 `英文 hello` 毫无意义，
                 // 那是用户刚打的词。反查模式下只保留中文候选本身。
                 children.retain(|(lang, text)| !lang.contains('英') && !text.eq_ignore_ascii_case(&self.composition));
             }
-            if children.is_empty() && !(looks_latin && !pinyin_input) {
+            if children.is_empty() && !(looks_latin && !is_exact_pinyin) {
                 // 组句候选（不可以替换这种）整句没有词典释义，用各词译文拼一条
                 if let Some(joined) = self.composed_translation(word) {
                     children.push(("英文（拼合）".to_string(), joined));
