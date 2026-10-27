@@ -1,0 +1,29 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [v1.0.3] - 2026-10-27
+
+### Added & Improved
+- **1-Click MSI Installer**: Added standard Windows `.msi` installer for effortless installation by non-technical users.
+- **Project Renamed**: Officially updated project name to **MC-TypeToAnything**.
+- **Bilingual & Multilingual Hierarchical Candidates**: Displays Chinese along with multilingual translations (English, German, Japanese, etc.) hierarchically; supports English-to-Chinese reverse lookup.
+- **Single-tap Shift Mode Toggle**: Seamlessly switch between Chinese and ABC English input mode with a single Shift key press, featuring floating status indicator bubbles.
+- **Dual Architecture TSF**: Complete Text Services Framework support for both 64-bit and 32-bit Windows host applications.
+- **Adaptive Learning**: Context-aware association, dynamic frequency boosting, and automatic user vocabulary learning.
+
+## [v1.0.2]
+
+### Enhancements
+- Optimized sentence pinyin segmentation using Viterbi k-best algorithm.
+- Enhanced installer scripts and registry cleanups.
+
+## [v1.0.1]
+
+### Improvements
+- Integrated CC-CEDICT Chinese-English reverse lookup with offline dictionary.
+
+## [v1.0.0]
+
+### Initial Release
+- Initial stable release including standalone hook-based IME and TSF text service.

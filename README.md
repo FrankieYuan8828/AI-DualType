@@ -367,3 +367,18 @@ screenshots/ 验证截图
 
 上游致谢：TypeAnything（产品思路与安装链参考）、librime / Weasel（TSF 与拼音引擎范式）、
 rime-essay / phrase-pinyin-data / pinyin-data / OpenCC（词库数据）。本项目代码以 MIT 发布。
+
+---
+
+## 8. 更新日志
+
+详细版本历史请查看 [CHANGELOG.zh-CN.md](https://github.com/FrankieYuan8828/MC-TypeToAnything/blob/main/CHANGELOG.zh-CN.md)（中文）或 [CHANGELOG.md](https://github.com/FrankieYuan8828/MC-TypeToAnything/blob/main/CHANGELOG.md)（英文）。
+
+---
+
+## 9. 作者
+
+**FrankieYuan8828**
+- 邮箱：[frankieyuan.yyd@gmail.com](mailto:frankieyuan.yyd@gmail.com)
+- GitHub：[https://github.com/FrankieYuan8828](https://github.com/FrankieYuan8828)
+
