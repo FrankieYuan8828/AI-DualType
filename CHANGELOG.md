@@ -1,5 +1,7 @@
 # Changelog
 
+> **MC-TypeToAnything**: A bidirectional IME that makes learning English easy, and makes learning/typing Chinese effortless for foreigners.
+
 All notable changes to this project will be documented in this file.
 
 ## [v1.0.3] - 2026-10-27
