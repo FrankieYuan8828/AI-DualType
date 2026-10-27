@@ -11,8 +11,8 @@
 
 | 安装包类型 | 适用人群 | 下载链接 | 安装方式 |
 | :--- | :--- | :--- | :--- |
-| 📦 **Windows 标准安装包 (`.msi`)** | **🌟 强烈推荐（零基础首选）** | **[👉 点击下载最新 MSI 安装包 (GitHub Releases)](https://github.com/FrankieYuan8828/MC-TypeEnglish/releases/latest)** | **双击直接运行**，全自动注册系统服务 |
-| ⚡ **单文件独立安装包 (`Setup.exe`)** | 便携免额外依赖 / 自动提权 | **[👉 点击下载最新 Setup.exe](https://github.com/FrankieYuan8828/MC-TypeEnglish/releases/latest)** | 双击自解压并自动完成提权安装 |
+| 📦 **Windows 标准安装包 (`.msi`)** | **🌟 强烈推荐（零基础首选）** | **[👉 点击下载最新 MSI 安装包 (GitHub Releases)](https://github.com/FrankieYuan8828/MC-TypeToAnything/releases/latest)** | **双击直接运行**，全自动注册系统服务 |
+| ⚡ **单文件独立安装包 (`Setup.exe`)** | 便携免额外依赖 / 自动提权 | **[👉 点击下载最新 Setup.exe](https://github.com/FrankieYuan8828/MC-TypeToAnything/releases/latest)** | 双击自解压并自动完成提权安装 |
 
 #### 📖 极简 3 步使用：
 1. **下载并双击运行** `MC-TypeToAnything-1.0.3.msi`。
@@ -82,7 +82,7 @@ TSF 实现细节与踩坑见 [docs/TSF-IMPLEMENTATION.md](docs/TSF-IMPLEMENTATIO
 ## 1. 安装
 
 ### 方式 A：MSI 极速安装（推荐普通用户）
-1. 前往 **[Releases 页面](https://github.com/FrankieYuan8828/MC-TypeEnglish/releases/latest)** 下载 `MC-TypeToAnything-1.0.3.msi`。
+1. 前往 **[Releases 页面](https://github.com/FrankieYuan8828/MC-TypeToAnything/releases/latest)** 下载 `MC-TypeToAnything-1.0.3.msi`。
 2. 双击运行，根据系统 UAC 提示点「允许/是」即可完成一键全自动安装与注册。
 3. 随时可在 Windows「设置 → 应用 → 安装的应用」里一键卸载或升级。
 
