@@ -42,10 +42,10 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: MC-TypeEnglish ${{ env.TAG }}
+          name: MC-TypeToAnything ${{ env.TAG }}
           draft: false
           prerelease: false
           files: |
-            dist/v${{ env.VERSION }}/MC-TypeEnglish-${{ env.VERSION }}.msi
-            dist/v${{ env.VERSION }}/MC-TypeEnglish-Setup-${{ env.VERSION }}.exe
-            dist/v${{ env.VERSION }}/MC-TypeEnglish-Setup.exe
+            dist/v${{ env.VERSION }}/MC-TypeToAnything-${{ env.VERSION }}.msi
+            dist/v${{ env.VERSION }}/MC-TypeToAnything-Setup-${{ env.VERSION }}.exe
+            dist/v${{ env.VERSION }}/MC-TypeToAnything-Setup.exe

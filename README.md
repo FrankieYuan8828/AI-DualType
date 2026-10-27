@@ -1,6 +1,26 @@
-# MC-TypeEnglish
+# MC-TypeToAnything
 
-![MC-TypeEnglish Banner](image.png)
+![MC-TypeToAnything Banner](image.png)
+
+---
+
+### 🚀 小白 / 普通用户 1 秒极速上手（推荐 MSI 安装包）
+
+> **不懂开源、不想配置编译环境或敲命令行？**  
+> 直接下载 Windows 官方标准 **MSI 安装包**，像安装普通微信、QQ 一样，**双击即可全自动完成安装与系统级输入法注册**！
+
+| 安装包类型 | 适用人群 | 下载链接 | 安装方式 |
+| :--- | :--- | :--- | :--- |
+| 📦 **Windows 标准安装包 (`.msi`)** | **🌟 强烈推荐（零基础首选）** | **[👉 点击下载最新 MSI 安装包 (GitHub Releases)](https://github.com/FrankieYuan8828/MC-TypeEnglish/releases/latest)** | **双击直接运行**，全自动注册系统服务 |
+| ⚡ **单文件独立安装包 (`Setup.exe`)** | 便携免额外依赖 / 自动提权 | **[👉 点击下载最新 Setup.exe](https://github.com/FrankieYuan8828/MC-TypeEnglish/releases/latest)** | 双击自解压并自动完成提权安装 |
+
+#### 📖 极简 3 步使用：
+1. **下载并双击运行** `MC-TypeToAnything-1.0.3.msi`。
+2. 弹出 Windows 用户账户控制（UAC）提示时点击 **「是 / 允许」**，等待 2 秒安装完成。
+3. 按键盘快捷键 **`Win + 空格`** 切换到 **「MC-TypeToAnything」**，即可在所有软件（微信、QQ、Office、浏览器、游戏等）中直接打字！
+> 💡 **卸载非常简单**：可在 Windows **「设置 → 应用 → 已安装的应用」** 中找到「MC-TypeToAnything」一键安全卸载。
+
+---
 
 > 打拼音，候选窗直接给出 **中文 + 多语译文** 的层级候选；打英文，反查中文：
 >
@@ -61,8 +81,14 @@ TSF 实现细节与踩坑见 [docs/TSF-IMPLEMENTATION.md](docs/TSF-IMPLEMENTATIO
 
 ## 1. 安装
 
+### 方式 A：MSI 极速安装（推荐普通用户）
+1. 前往 **[Releases 页面](https://github.com/FrankieYuan8828/MC-TypeEnglish/releases/latest)** 下载 `MC-TypeToAnything-1.0.3.msi`。
+2. 双击运行，根据系统 UAC 提示点「允许/是」即可完成一键全自动安装与注册。
+3. 随时可在 Windows「设置 → 应用 → 安装的应用」里一键卸载或升级。
+
+### 方式 B：便携独立包 / 脚本安装（适合开发者与免安装用户）
 ```text
-dist\MC-TypeEnglish\
+dist\MC-TypeToAnything\
 ├─ mcte_tsf.dll          64 位 TSF 文本服务
 ├─ mcte_tsf_x86.dll      32 位 TSF 文本服务（微信 / 老 Office 等 32 位应用用）
 ├─ mcte.exe              钩子版（可选，免管理员）
@@ -78,18 +104,18 @@ dist\MC-TypeEnglish\
 
 双击 `install.bat`，安装器会：
 
-1. 把二进制写进 `C:\Program Files\MC-TypeEnglish\bin-<内容哈希>\`（升级不被占用文件卡住）
+1. 把二进制写进 `C:\Program Files\MC-TypeToAnything\bin-<内容哈希>\`（升级不被占用文件卡住）
 2. `regsvr32` 注册 64 位文本服务：CLSID + TSF category + 语言配置（Win+Space 里那一项）
 3. `SysWOW64\regsvr32` 注册 32 位文本服务（同一 CLSID 的 WOW6432Node 分支）
 4. 写默认配置 / 开始菜单快捷方式 / 「应用和功能」卸载项
 
-安装完按 **Win+Space** 选「MC-TypeEnglish」即可。不需要重启，新开的程序立即生效。
+安装完按 **Win+Space** 选「MC-TypeToAnything」即可。不需要重启，新开的程序立即生效。
 
 只想要免管理员的钩子版：`install.bat -Hook`。
 试运行（不改系统）：`Install.ps1 -DryRun`。
 
-卸载：设置 → 应用 → 安装的应用 → MC-TypeEnglish；或运行安装目录的 `Uninstall.ps1`。
-配置、用户词库、日志保留在 `%APPDATA%\MC-TypeEnglish`（重装可继续用）。
+卸载：设置 → 应用 → 安装的应用 → MC-TypeToAnything；或运行安装目录的 `Uninstall.ps1`。
+配置、用户词库、日志保留在 `%APPDATA%\MC-TypeToAnything`（重装可继续用）。
 
 ---
 

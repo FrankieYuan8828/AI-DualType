@@ -12,7 +12,7 @@
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 
-  <Package Name="MC-TypeEnglish"
+  <Package Name="MC-TypeToAnything"
            Manufacturer="FrankieYuan"
            Version="1.0.3"
            UpgradeCode="E9305862-3C47-4032-BB2C-85CACA68C83D"
@@ -20,24 +20,24 @@
            Compressed="yes"
            InstallerVersion="500">
 
-    <SummaryInformation Description="MC-TypeEnglish 拼音 + 多语译文输入法" />
+    <SummaryInformation Description="MC-TypeToAnything 拼音 + 多语译文输入法" />
 
     <MajorUpgrade Schedule="afterInstallInitialize"
-                  DowngradeErrorMessage="已安装更高版本的 MC-TypeEnglish，请先卸载。" />
+                  DowngradeErrorMessage="已安装更高版本的 MC-TypeToAnything，请先卸载。" />
     <MediaTemplate EmbedCab="yes" />
 
     <StandardDirectory Id="ProgramFiles64Folder">
-      <Directory Id="INSTALLDIR" Name="MC-TypeEnglish">
+      <Directory Id="INSTALLDIR" Name="MC-TypeToAnything">
         <Directory Id="DATADIR" Name="data" />
         <Directory Id="TOOLSDIR" Name="tools" />
       </Directory>
     </StandardDirectory>
 
     <StandardDirectory Id="ProgramMenuFolder">
-      <Directory Id="AppMenuFolder" Name="MC-TypeEnglish" />
+      <Directory Id="AppMenuFolder" Name="MC-TypeToAnything" />
     </StandardDirectory>
 
-    <Feature Id="Main" Title="MC-TypeEnglish 输入法" Level="1">
+    <Feature Id="Main" Title="MC-TypeToAnything 输入法" Level="1">
       <ComponentRef Id="MainExe" />
       <ComponentRef Id="TextService" />
       <ComponentRef Id="Tools" />
@@ -93,7 +93,7 @@
       </RegistryKey>
       <RegistryKey Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run">
         <RegistryValue Type="string"
-                       Name="MC-TypeEnglish Terminal"
+                       Name="MC-TypeToAnything Terminal"
                        Value="&quot;[INSTALLDIR]mcte.exe&quot; --terminal-only" />
       </RegistryKey>
     </Component>
@@ -103,14 +103,14 @@
       <Shortcut Id="ConfigShortcut"
                 Name="配置文件夹"
                 Target="[System64Folder]WindowsPowerShell\v1.0\powershell.exe"
-                Arguments="-NoProfile -Command &quot;explorer $env:APPDATA\MC-TypeEnglish&quot;"
+                Arguments="-NoProfile -Command &quot;explorer $env:APPDATA\MC-TypeToAnything&quot;"
                 Description="配置、用户词库与日志" />
       <Shortcut Id="UninstallShortcut"
-                Name="卸载 MC-TypeEnglish"
+                Name="卸载 MC-TypeToAnything"
                 Target="[System64Folder]msiexec.exe"
                 Arguments="/x [ProductCode]" />
       <RemoveFolder Id="RemoveAppMenuFolder" On="uninstall" />
-      <RegistryValue Root="HKCU" Key="Software\MC-TypeEnglish" Name="Shortcuts" Type="integer" Value="1" KeyPath="yes" />
+      <RegistryValue Root="HKCU" Key="Software\MC-TypeToAnything" Name="Shortcuts" Type="integer" Value="1" KeyPath="yes" />
     </Component>
 
     <!-- 注册 COM/TSF（regsvr32 只写 HKLM，用 SYSTEM 权限的 deferred 动作） -->
