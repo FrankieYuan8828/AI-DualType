@@ -458,11 +458,11 @@ unsafe extern "system" fn main_wndproc(
                 app.engine.toggle_ascii_mode();
                 app.update_tray();
                 let ascii = app.engine.ascii_mode();
-                let text = if ascii { "ABC 英文模式" } else { "中文模式" };
+                let text = if ascii { "英语模式（中文跟随）" } else { "中文模式（多语跟随）" };
                 app.window.flash_tip("Ctrl+Alt+P", text, 700);
                 log(&format!(
                     "hotkey: mode -> {}",
-                    if ascii { "ABC" } else { "中文" }
+                    if ascii { "英语" } else { "中文" }
                 ));
             });
             LRESULT(0)
@@ -476,13 +476,13 @@ unsafe extern "system" fn main_wndproc(
                         {
                             let (dict_rows, user_words, _, _) = app.engine.stats();
                             format!(
-                                "MC-TypeEnglish · {} · 词库 {dict_rows} · 已学 {user_words}",
-                                if app.engine.ascii_mode() { "ABC" } else { "中文" }
+                                "MC-TypeToAnything · {} · 词库 {dict_rows} · 已学 {user_words}",
+                                if app.engine.ascii_mode() { "英语" } else { "中文" }
                             )
                         },
                         format!(
                             "切换到{}模式",
-                            if app.engine.ascii_mode() { "中文" } else { "ABC" }
+                            if app.engine.ascii_mode() { "中文" } else { "英语" }
                         ),
                     )
                 });
@@ -700,9 +700,9 @@ impl App {
 
 fn tray_tooltip(ascii: bool) -> &'static str {
     if ascii {
-        "MC-TypeEnglish（ABC 模式）"
+        "MC-TypeToAnything（英语模式）"
     } else {
-        "MC-TypeEnglish（中文模式）"
+        "MC-TypeToAnything（中文模式）"
     }
 }
 

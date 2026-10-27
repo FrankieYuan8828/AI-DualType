@@ -37,7 +37,7 @@ NOISE = re.compile(
     re.IGNORECASE,
 )
 CJK = re.compile(r"^[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+$")
-EN_WORD = re.compile(r"^[a-z][a-z'\- ]{1,24}$")
+EN_WORD = re.compile(r"^[a-z][a-z'\- ]{0,24}$")
 
 
 def read_cedict():

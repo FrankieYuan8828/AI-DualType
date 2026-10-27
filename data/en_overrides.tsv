@@ -1,6 +1,13 @@
-﻿# 英文 -> 中文 的常见词校正表（覆盖 CC-CEDICT 的不理想排序）
+# 英文 -> 中文 的常见词校正表（覆盖 CC-CEDICT 的不理想排序）
 # 格式： english<TAB>中文1;中文2;中文3
 # 只放「CEDICT 给错了/给偏了」的超高频词，保持短小；其余仍由 CEDICT 提供。
+i	我
+me	我;本人
+my	我的
+a	一个;一
+am	是
+is	是
+are	是
 anything	任何东西;任何事
 something	某事;某物
 everything	一切;所有

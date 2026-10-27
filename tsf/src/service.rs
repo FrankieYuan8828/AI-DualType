@@ -586,11 +586,11 @@ impl ITfKeyEventSink_Impl for KeySink_Impl {
         }
         match toggled {
             Some(ascii) => {
-                let text = if ascii { "ABC 英文模式" } else { "中文模式" };
+                let text = if ascii { "英语模式（中文跟随）" } else { "中文模式（多语跟随）" };
                 with_window(|window| {
                     window.flash_tip("Shift", text, 700);
                 });
-                log(&format!("tsf: shift toggle -> {}", if ascii { "ABC" } else { "中文" }));
+                log(&format!("tsf: shift toggle -> {}", if ascii { "英语" } else { "中文" }));
                 Ok(windows::core::BOOL::from(true))
             }
             None => Ok(FALSE),
@@ -635,11 +635,11 @@ fn toggle_mode(sink: &KeySink_Impl) {
         }
     }
     if let Some(ascii) = result {
-        let text = if ascii { "ABC 英文模式" } else { "中文模式" };
+        let text = if ascii { "英语模式（中文跟随）" } else { "中文模式（多语跟随）" };
         with_window(|window| {
             window.flash_tip("Ctrl+Alt+P", text, 700);
         });
-        log(&format!("tsf: toggle -> {}", if ascii { "ABC" } else { "中文" }));
+        log(&format!("tsf: toggle -> {}", if ascii { "英语" } else { "中文" }));
     }
 }
 

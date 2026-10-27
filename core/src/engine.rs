@@ -278,9 +278,6 @@ impl Engine {
 
     /// Feed one key event. Mutates state and reports what to do with the key.
     pub fn handle(&mut self, key: Key) -> Outcome {
-        if self.ascii_mode {
-            return Outcome::Ignore;
-        }
         match key {
             Key::Char(c) => self.handle_char(c),
             // 空格：上屏当前选中的候选层
@@ -558,14 +555,11 @@ impl Engine {
     /// 只读判断「这个键会不会被我们吃掉」，用于 TSF 的 OnTestKeyDown：
     /// 那里必须廉价且无副作用（有些应用会连发多次 OnTestKeyDown）。
     pub fn would_handle(&self, key: Key) -> bool {
-        if self.ascii_mode {
-            return false;
-        }
         match key {
             Key::Char(c) if c.is_ascii_lowercase() => true,
             Key::Char(c) if c.is_ascii_digit() => self.is_composing(),
             Key::Char(c) if c == '.' => self.is_composing(),
-            Key::Char(c) => self.is_composing() && chinese_punctuation(c).is_some(),
+            Key::Char(c) => self.is_composing() && (self.ascii_mode || chinese_punctuation(c).is_some()),
             Key::Space | Key::Enter | Key::Backspace | Key::Escape => self.is_composing(),
             Key::Up | Key::Down | Key::Left | Key::Right => !self.rows.is_empty(),
             // 翻页键只在有多页时才吞掉，否则让 `-` `+` 正常输入
@@ -580,6 +574,69 @@ impl Engine {
     fn rebuild(&mut self) {
         self.rows.clear();
         if self.composition.is_empty() {
+            return;
+        }
+
+        if self.ascii_mode {
+            // 英语模式：上面是英语输入，下面的译文是中文默认跟随，并支持用户设置多一门语言跟随
+            let mut pool: Vec<(String, i64)> = Vec::new();
+
+            // 1. 首选精确输入的英文词（单字母 "i" 优先推荐大写 "I" 并保留 "i"）
+            let exact = if self.composition == "i" {
+                "I".to_string()
+            } else {
+                self.composition.clone()
+            };
+            pool.push((exact, -100_000_000));
+            if self.composition == "i" {
+                pool.push(("i".to_string(), -99_000_000));
+            }
+
+            // 2. 联想词扩展
+            let assocs = self
+                .glossary
+                .english_associations(&self.composition, self.cfg.max_parents);
+            for (idx, assoc) in assocs.into_iter().enumerate() {
+                if !pool.iter().any(|(w, _)| w.eq_ignore_ascii_case(&assoc.word)) {
+                    pool.push((assoc.word, -90_000_000 + (idx as i64) * 100 + (assoc.rank as i64)));
+                }
+            }
+
+            pool.truncate(self.cfg.max_parents);
+            self.pool_len = pool.len();
+
+            let size = self.page_size();
+            let pages = self.page_count();
+            if self.page >= pages {
+                self.page = pages.saturating_sub(1);
+            }
+            let start = self.page * size;
+            let slice = &pool[start..(start + size).min(pool.len())];
+
+            for (idx, (word, _)) in slice.iter().enumerate() {
+                let label = (idx + 1).to_string();
+                let children = self.children_for(word);
+                self.rows.push(Row {
+                    label,
+                    text: word.clone(),
+                    depth: 0,
+                    lang: "EN".to_string(),
+                });
+                for (child_idx, (lang, text)) in children.into_iter().enumerate() {
+                    self.rows.push(Row {
+                        label: format!("{}.{}", idx + 1, child_idx + 1),
+                        text,
+                        depth: 1,
+                        lang,
+                    });
+                }
+            }
+
+            if let Some(index) = self.selected_row_index() {
+                self.highlight = index;
+            } else {
+                self.highlight = 0;
+            }
             return;
         }
 
@@ -623,7 +680,7 @@ impl Engine {
 
         // 拼音一个候选都没有、但打的是英文词 → 反查中文（hello → 你好/喂）。
         // 只在「拼音完全没料」时启用，避免和正常拼音输入互相打断。
-        let looks_latin = self.composition.len() >= 2
+        let looks_latin = !self.composition.is_empty()
             && self
                 .composition
                 .chars()
@@ -824,12 +881,29 @@ impl Engine {
                 .chars()
                 .all(|c| c.is_ascii_alphanumeric() || c == ' ' || c == '-' || c == '\'');
         if is_english {
+            let mut primary_zh: Option<String> = None;
             for zh in self.glossary.english_to_chinese(word, budget) {
+                if primary_zh.is_none() {
+                    primary_zh = Some(zh.clone());
+                }
                 if !out.iter().any(|(_, t)| t == &zh) {
                     out.push(("中文".to_string(), zh));
                 }
                 if out.len() >= budget {
                     break;
+                }
+            }
+
+            // 用户配置了「多一门语言跟随」（如德语、日语、法语等），通过主中文释义补充该语言的译文
+            if let Some(extra_lang) = &self.cfg.extra_language {
+                if let Some(zh) = &primary_zh {
+                    let extra_targets = vec![extra_lang.clone()];
+                    for tr in self.glossary.translations(zh, &extra_targets, 1) {
+                        if !out.iter().any(|(l, _)| l == &tr.lang) {
+                            out.push((tr.lang, tr.text));
+                            break;
+                        }
+                    }
                 }
             }
             return out;
@@ -1076,6 +1150,12 @@ impl Engine {
     }
 
     fn punctuation(&mut self, c: char) -> Option<String> {
+        if self.ascii_mode {
+            if self.is_composing() && c.is_ascii_punctuation() {
+                return Some(c.to_string());
+            }
+            return None;
+        }
         let mapped: &str = match c {
             ',' => "，",
             '.' => "。",
@@ -1157,12 +1237,17 @@ mod tests {
              nihao\t妳好\t500\n\
              ni\t你\t2\n",
         );
-        let glossary = Glossary::parse(
+        let mut glossary = Glossary::parse(
             "你好\tde\thallo\n\
              你好\ten\thello\n\
              你好\tja\tこんにちは\n\
-             妳好\tde\thallo\n",
+             妳好\tde\thallo\n\
+             我\ten\tI\n\
+             我\tde\tich\n",
         );
+        glossary.set_reverse(crate::packdict::PackDict::from_bytes(
+            "hello\t你好:10:99\ni\t我:2:99\n".as_bytes().to_vec(),
+        ));
         Engine::new(dict, glossary, Config::default())
     }
 
@@ -1349,11 +1434,24 @@ mod tests {
     }
 
     #[test]
-    fn ascii_mode_ignores_everything() {
+    fn english_mode_shows_english_with_chinese_translations() {
         let mut e = engine();
         e.set_ascii_mode(true);
-        assert_eq!(e.handle(Key::Char('n')), Outcome::Ignore);
-        assert_eq!(e.handle(Key::Space), Outcome::Ignore);
+        assert_eq!(e.handle(Key::Char('i')), Outcome::Consumed);
+        assert_eq!(e.rows()[0].text, "I");
+        assert_eq!(e.rows()[0].depth, 0);
+        assert_eq!(e.rows()[1].text, "我");
+        assert_eq!(e.rows()[1].depth, 1);
+        assert_eq!(e.handle(Key::Space), Outcome::Commit("I".to_string()));
+    }
+
+    #[test]
+    fn chinese_mode_typing_i_gives_wo() {
+        let mut e = engine();
+        assert_eq!(e.handle(Key::Char('i')), Outcome::Consumed);
+        assert_eq!(e.rows()[0].text, "我");
+        assert_eq!(e.rows()[0].depth, 0);
+        assert_eq!(e.handle(Key::Space), Outcome::Commit("我".to_string()));
     }
 
     #[test]

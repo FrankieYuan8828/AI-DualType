@@ -61,6 +61,10 @@ impl Glossary {
         glossary
     }
 
+    pub fn set_reverse(&mut self, pack: PackDict) {
+        self.reverse = Some(std::sync::Arc::new(pack));
+    }
+
     /// 数据包规模（词表条数, 中英词条数, 反查词条数），日志与自检用。
     pub fn stats(&self) -> (usize, usize, usize) {
         (
