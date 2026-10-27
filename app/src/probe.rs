@@ -13,6 +13,7 @@ use mcte_core::userdb::UserDb;
 
 use crate::hook;
 
+#[derive(Default, Clone)]
 pub struct Options {
     /// `--commit <label>`：模拟按下某个层级标签后上屏。
     pub commit: Option<String>,
@@ -22,6 +23,8 @@ pub struct Options {
     pub no_prefix: bool,
     /// `--page N`：列出第 N 页（1 起）的候选。
     pub page: usize,
+    /// `--ascii`：在英语模式下打字
+    pub ascii: bool,
 }
 
 impl Options {
@@ -31,6 +34,7 @@ impl Options {
             userdb: None,
             no_prefix: false,
             page: 1,
+            ascii: false,
         };
         let mut idx = 0;
         while idx < args.len() {
@@ -50,6 +54,10 @@ impl Options {
                 "--page" => {
                     options.page = args.get(idx + 1).and_then(|n| n.parse().ok()).unwrap_or(1);
                     idx += 2;
+                }
+                "--ascii" => {
+                    options.ascii = true;
+                    idx += 1;
                 }
                 _ => idx += 1,
             }
@@ -84,6 +92,9 @@ fn type_pinyin(engine: &mut Engine, input: &str) {
 
 pub fn run(input: &str, options: Options) -> Result<(), String> {
     let mut engine = build_engine(&options)?;
+    if options.ascii {
+        engine.set_ascii_mode(true);
+    }
     type_pinyin(&mut engine, input);
     // 翻到指定页（`-` / `+` 就是 PagePrev / PageNext）
     while engine.page() + 1 < options.page {
@@ -163,6 +174,7 @@ pub fn learn(pinyin: &str, word: &str, times: u32) -> Result<(), String> {
         userdb: None,
         no_prefix: false,
         page: 1,
+        ..Default::default()
     })?;
     for _ in 0..times.max(1) {
         let prev = engine.last_committed().map(str::to_string);
@@ -183,6 +195,7 @@ pub fn learn(pinyin: &str, word: &str, times: u32) -> Result<(), String> {
         userdb: None,
         no_prefix: false,
         page: 1,
+        ..Default::default()
     })?;
     type_pinyin(&mut engine, pinyin);
     println!("rows after learning:");
@@ -207,6 +220,7 @@ pub fn eval(path: &std::path::Path) -> Result<(), String> {
         userdb: Some(std::env::temp_dir().join("mcte-eval-userdb.json")),
         no_prefix: false,
         page: 1,
+        ..Default::default()
     })?;
     let _ = std::fs::remove_file(std::env::temp_dir().join("mcte-eval-userdb.json"));
 
@@ -363,6 +377,7 @@ pub fn selftest() -> Result<(), String> {
             userdb: None,
             no_prefix: false,
             page: 1,
+            ..Default::default()
         })?;
         engine.clear_userdb();
         Ok(engine)

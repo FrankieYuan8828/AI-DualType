@@ -43,7 +43,11 @@ const FLUSH_EVERY_COMMITS: u32 = 8;
 static FALLBACK_USED: AtomicBool = AtomicBool::new(false);
 
 /// 单独按一下 Shift 就切换中/英（与微软拼音一致）；按住 Shift 打大写字母不算。
-const VK_SHIFT_CODE: u32 = 0x10;
+/// 兼容通用 Shift (0x10)、左 Shift (0xA0) 与右 Shift (0xA1)。
+#[inline]
+fn is_shift_vk(vk: u32) -> bool {
+    matches!(vk, 0x10 | 0xA0 | 0xA1)
+}
 /// 中/英切换的保留键：Ctrl+Alt+P（与钩子版快捷键一致）
 const VK_P_CODE: u32 = 0x50;
 const GUID_TOGGLE: windows::core::GUID =
@@ -434,7 +438,7 @@ impl ITfKeyEventSink_Impl for KeySink_Impl {
         _lparam: LPARAM,
     ) -> WinResult<BOOL> {
         let vk = wparam.0 as u32;
-        if vk == VK_SHIFT_CODE {
+        if is_shift_vk(vk) {
             return Ok(BOOL::from(!ctrl_alt_win_held()));
         }
         if modifiers_held() || keymap::is_modifier(vk) {
@@ -473,7 +477,7 @@ impl ITfKeyEventSink_Impl for KeySink_Impl {
         _lparam: LPARAM,
     ) -> WinResult<BOOL> {
         let vk = wparam.0 as u32;
-        if VK_SHIFT_CODE == vk {
+        if is_shift_vk(vk) {
             if let Ok(mut state) = self.get_impl().state.lock() {
                 state.shift_alone = !ctrl_alt_win_held();
             }
@@ -552,7 +556,7 @@ impl ITfKeyEventSink_Impl for KeySink_Impl {
         _lparam: LPARAM,
     ) -> WinResult<BOOL> {
         // 单独按下的 Shift 抬起时要自己处理（切中/英），所以这里必须认领。
-        if wparam.0 as u32 == VK_SHIFT_CODE {
+        if is_shift_vk(wparam.0 as u32) {
             let alone = self
                 .get_impl()
                 .state
@@ -570,7 +574,7 @@ impl ITfKeyEventSink_Impl for KeySink_Impl {
         wparam: WPARAM,
         _lparam: LPARAM,
     ) -> WinResult<BOOL> {
-        if wparam.0 as u32 != VK_SHIFT_CODE {
+        if !is_shift_vk(wparam.0 as u32) {
             return Ok(FALSE);
         }
         log("tsf: shift keyup seen");

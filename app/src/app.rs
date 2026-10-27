@@ -361,7 +361,7 @@ unsafe extern "system" fn keyboard_proc(code: i32, wparam: WPARAM, lparam: LPARA
                     app.engine.toggle_ascii_mode();
                     app.update_tray();
                     let ascii = app.engine.ascii_mode();
-                    let text = if ascii { "ABC 英文模式" } else { "中文模式" };
+                    let text = if ascii { "英语模式（中文跟随）" } else { "中文模式（多语跟随）" };
                     app.window.flash_tip("Shift", text, 700);
                 }
                 alone
@@ -371,7 +371,7 @@ unsafe extern "system" fn keyboard_proc(code: i32, wparam: WPARAM, lparam: LPARA
                 let ascii = with_app(|app| app.engine.ascii_mode()).unwrap_or(false);
                 log(&format!(
                     "shift toggle -> {}",
-                    if ascii { "ABC" } else { "中文" }
+                    if ascii { "英语" } else { "中文" }
                 ));
             }
         }
