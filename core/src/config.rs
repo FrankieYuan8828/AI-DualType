@@ -96,7 +96,7 @@ impl Default for Config {
             targets: vec!["en".to_string(), "de".to_string(), "ja".to_string()],
             start_in_ascii_mode: false,
             toggle_hotkey: "Ctrl+Alt+P".to_string(),
-            max_parents: 21,
+            max_parents: 70,
             page_size: 7,
             max_children: 3,
             prefix_search: true,
@@ -137,7 +137,7 @@ impl Config {
     /// Clamp values the UI and the engine rely on.
     fn sanitised(mut self) -> Self {
         self.page_size = self.page_size.clamp(1, 9);
-        self.max_parents = self.max_parents.clamp(self.page_size, 63);
+        self.max_parents = self.max_parents.clamp(self.page_size, 100);
         self.max_children = self.max_children.clamp(0, 9);
 
         // `targets` 不再是手写列表：英文固定跟随，`extra_language` 决定要不要
@@ -214,7 +214,7 @@ mod tests {
     #[test]
     fn defaults_are_within_limits() {
         let cfg = Config::default().sanitised();
-        assert!(cfg.max_parents <= 63);
+        assert!(cfg.max_parents <= 100);
         assert_eq!(cfg.page_size, 7);
         assert_eq!(cfg.targets.first().map(String::as_str), Some("en"));
     }

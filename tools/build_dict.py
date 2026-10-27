@@ -188,7 +188,8 @@ def main():
         "那道了": ("nadaole", 4124),
         "你说": ("nishuo", 1630),
         "也要": ("yeyao", 832),
-        "吃了吗": ("chilema", 3500),
+        "吃了么": ("chilema", 3500),
+        "浮": ("fu", 5600),
         "好呢": ("haone", 2200),
         "好嘛": ("haoma", 2300),
         "好得": ("haode", 2100),
@@ -252,7 +253,9 @@ def main():
 
     rows = []
     for key in sorted(buckets):
-        sorted_bucket = sorted(buckets[key], key=lambda t: t[1])[:MAX_PER_KEY]
+        # 单字音节（如 fu, shi, yi, li 等）容纳最多 100 个单字，翻页可翻出所有常见单字；词汇短语保留前 30 个
+        limit = 100 if (" " not in key and len(key) <= 6) else 30
+        sorted_bucket = sorted(buckets[key], key=lambda t: t[1])[:limit]
         for word, rank in sorted_bucket:
             rows.append("%s\t%s\t%d" % (key, word, rank))
 

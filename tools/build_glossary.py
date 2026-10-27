@@ -32,11 +32,11 @@ OVERRIDES = os.path.abspath(os.path.join(HERE, "..", "data", "en_overrides.tsv")
 
 # 这些释义是词典元信息，不是翻译
 NOISE = re.compile(
-    r"^(variant of|old variant|archaic variant|used in|see |surname |abbr\.|also pr\.|"
-    r"Taiwan pr\.|Japanese variant|erhua variant|surname|old|archaic)",
+    r"^(variant of|old variant of|archaic variant of|used in|see |surname |abbr\.|also pr\.|"
+    r"Taiwan pr\.|Japanese variant|erhua variant)",
     re.IGNORECASE,
 )
-CJK = re.compile(r"^[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+$")
+CJK = re.compile(r"^[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaffA-Za-z0-9 ]+$")
 EN_WORD = re.compile(r"^[a-z][a-z'\- ]{0,24}$")
 
 
@@ -80,10 +80,18 @@ def head_token(text):
     return None
 
 
+NON_INFLECTED = {
+    "because", "both", "but", "and", "or", "for", "with", "from", "that", "this",
+    "they", "them", "their", "when", "where", "why", "how", "what", "who", "which",
+    "always", "never", "maybe", "however", "please", "sorry", "thanks", "hello",
+    "yes", "no", "ok", "into", "onto", "upon", "about", "above", "after", "before",
+    "under", "over", "between", "among", "through", "during", "without", "again",
+}
+
 def inflections(base):
     """给常用词补词形，让 worked/working/books/cars 也能查到。"""
     out = []
-    if len(base) < 3 or " " in base:
+    if len(base) < 3 or " " in base or base in NON_INFLECTED:
         return out
     if base.endswith("e"):
         out += [base + "d", base + "s", base[:-1] + "ing"]

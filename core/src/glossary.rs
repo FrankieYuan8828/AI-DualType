@@ -145,7 +145,12 @@ impl Glossary {
             return Vec::new();
         };
         let prefix_lower = prefix.to_ascii_lowercase();
-        let matches = pack.prefix_matches(&prefix_lower, limit * 6);
+        let scan_limit = match prefix_lower.len() {
+            1 => 1500,
+            2 => 500,
+            _ => (limit * 8).max(100),
+        };
+        let matches = pack.prefix_matches(&prefix_lower, scan_limit);
         let mut results = Vec::new();
         for (key, val) in matches {
             let mut zh_list = Vec::new();

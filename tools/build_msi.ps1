@@ -44,6 +44,7 @@ $msiOut = Join-Path $versionDir "MC-TypeToAnything-$Version.msi"
     -o "$msiOut"
 
 if ($LASTEXITCODE -ne 0) { throw "WiX build 失败" }
+Copy-Item "$msiOut" "dist\MC-TypeToAnything-$Version.msi" -Force
 
 # 3. 构建单文件 exe 安装包
 Write-Host "== 3/3 构建 Setup.exe =="
@@ -52,6 +53,7 @@ if ($LASTEXITCODE -ne 0) { throw "cargo build mcte-setup 失败" }
 $setupExe = Join-Path $versionDir "MC-TypeToAnything-Setup-$Version.exe"
 Copy-Item "target\release\mcte-setup.exe" $setupExe -Force
 Copy-Item "target\release\mcte-setup.exe" (Join-Path $versionDir "MC-TypeToAnything-Setup.exe") -Force
+Copy-Item "target\release\mcte-setup.exe" "dist\MC-TypeToAnything-Setup.exe" -Force
 
 Write-Host "== 完成 v$Version 发布产物 =="
 Get-ChildItem $versionDir -File |

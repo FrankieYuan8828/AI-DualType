@@ -559,7 +559,8 @@ impl Engine {
             Key::Char(c) if c.is_ascii_lowercase() => true,
             Key::Char(c) if c.is_ascii_digit() => self.is_composing(),
             Key::Char(c) if c == '.' => self.is_composing(),
-            Key::Char(c) => self.is_composing() && (self.ascii_mode || chinese_punctuation(c).is_some()),
+            Key::Char(c) if c == '-' || c == '=' => self.is_composing(),
+            Key::Char(c) => self.is_composing() && (self.ascii_mode || is_punctuation_char(c)),
             Key::Space | Key::Enter | Key::Backspace | Key::Escape => self.is_composing(),
             Key::Up | Key::Down | Key::Left | Key::Right => !self.rows.is_empty(),
             // 翻页键只在有多页时才吞掉，否则让 `-` `+` 正常输入
@@ -1211,17 +1212,13 @@ fn is_chinese_text(text: &str) -> bool {
         })
 }
 
-/// Chinese punctuation for characters typed while composing.
-fn chinese_punctuation(c: char) -> Option<char> {
-    Some(match c {
-        ',' => '，',
-        '.' => '。',
-        '?' => '？',
-        '!' => '！',
-        ';' => '；',
-        ':' => '：',
-        _ => return None,
-    })
+/// Punctuation characters handled by the engine.
+fn is_punctuation_char(c: char) -> bool {
+    matches!(
+        c,
+        ',' | '.' | ';' | ':' | '?' | '!' | '\\' | '/' | '(' | ')' | '[' | ']' | '{' | '}'
+            | '<' | '>' | '-' | '_' | '=' | '+' | '|' | '`' | '~' | '^' | '$' | '*' | '"' | '\''
+    )
 }
 
 
@@ -1230,6 +1227,7 @@ fn chinese_punctuation(c: char) -> Option<char> {
 mod tests {
     use super::*;
     use crate::config::Config;
+    use crate::packdict::PackDict;
 
     fn engine() -> Engine {
         let dict = Dict::parse(
@@ -1695,5 +1693,117 @@ mod tests {
 
         // 被标点打断后，不应学成「增压器」
         assert!(e.userdb.learned("zengyaqi").is_empty());
+    }
+
+    #[test]
+    fn typing_fu_contains_fu_char_and_paging_works() {
+        let dict = Dict::parse(
+            "fu\t副\t1779\n\
+             fu\t付\t4811\n\
+             fu\t浮\t5951\n\
+             fu\t服\t6047\n\
+             fu\t佛\t6655\n\
+             fu\t福\t6999\n\
+             fu\t富\t7625\n\
+             fu\t负\t8942\n\
+             fu\t夫\t9325\n\
+             fu\t赴\t11002\n\
+             fu\t府\t12708\n\
+             fu\t父\t12774\n\
+             fu\t附\t13435\n\
+             fu\t覆\t13911\n",
+        );
+        let mut e = Engine::new(dict, Glossary::default(), Config::default());
+        type_str(&mut e, "fu");
+        let page1: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 0)
+            .map(|r| r.text.clone())
+            .collect();
+        assert!(
+            page1.contains(&"浮".to_string()),
+            "第 1 页应包含「浮」: {page1:?}"
+        );
+
+        // 测试 '=' 键翻页
+        assert!(e.would_handle(Key::Char('=')));
+        assert_eq!(e.handle(Key::Char('=')), Outcome::Consumed);
+        assert_eq!(e.page(), 1);
+        let page2: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 0)
+            .map(|r| r.text.clone())
+            .collect();
+        assert!(
+            page2.contains(&"父".to_string()),
+            "第 2 页应包含「父」: {page2:?}"
+        );
+        assert!(
+            page2.contains(&"附".to_string()),
+            "第 2 页应包含「附」: {page2:?}"
+        );
+    }
+
+    #[test]
+    fn single_letters_and_common_english_words_resolve_properly() {
+        let reverse_pack = PackDict::from_bytes(
+            b"a\t\xe4\xb8\x80\xe4\xb8\xaa:8:99;\xe5\xad\x97\xe6\xaf\x8dA:30000:97\n\
+              b\t\xe5\xad\x97\xe6\xaf\x8dB:30000:99\n\
+              old\t\xe8\x80\x81:689:99;\xe6\x97\xa7:5230:98\n\
+              was\t\xe6\x98\xaf:3:99;\xe6\x9b\xbe\xe6\x98\xaf:19726:98\n\
+              went\t\xe5\x8e\xbb:3:99;\xe5\x8e\xbb\xe4\xba\x86:19726:98\n"
+                .to_vec(),
+        );
+        let mut glossary = Glossary::default();
+        glossary.set_reverse(reverse_pack);
+        let mut e = Engine::new(Dict::default(), glossary, Config::default());
+
+        // 英语模式下测试单个字母和常用英文词
+        e.set_ascii_mode(true);
+
+        type_str(&mut e, "b");
+        assert_eq!(e.rows()[0].text, "b");
+        let b_translations: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 1)
+            .map(|r| r.text.clone())
+            .collect();
+        assert!(b_translations.contains(&"字母B".to_string()));
+        e.abort();
+
+        type_str(&mut e, "old");
+        assert_eq!(e.rows()[0].text, "old");
+        let old_translations: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 1)
+            .map(|r| r.text.clone())
+            .collect();
+        assert!(old_translations.contains(&"老".to_string()));
+        e.abort();
+
+        type_str(&mut e, "went");
+        assert_eq!(e.rows()[0].text, "went");
+        let went_translations: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 1)
+            .map(|r| r.text.clone())
+            .collect();
+        assert!(went_translations.contains(&"去".to_string()));
+        e.abort();
+
+        type_str(&mut e, "was");
+        assert_eq!(e.rows()[0].text, "was");
+        let was_translations: Vec<String> = e
+            .rows()
+            .iter()
+            .filter(|r| r.depth == 1)
+            .map(|r| r.text.clone())
+            .collect();
+        assert!(was_translations.contains(&"是".to_string()));
     }
 }
