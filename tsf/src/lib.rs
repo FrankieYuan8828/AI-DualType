@@ -45,7 +45,7 @@ pub const GUID_PROFILE: GUID = GUID::from_u128(0xb3d2_f0a4_6c81_4e17_9e45_2d8a_9
 /// 简体中文（0x0804）
 pub const LANGID_ZH_CN: u16 = 0x0804;
 /// 输入法显示名
-pub const DISPLAY_NAME: &str = "MC-TypeEnglish";
+pub const DISPLAY_NAME: &str = "MC-DualType";
 
 /// DLL 引用计数：-1 表示没有活对象（与 ATL 的 `g_cRefDll` 同语义）。
 static DLL_REF: AtomicI32 = AtomicI32::new(-1);

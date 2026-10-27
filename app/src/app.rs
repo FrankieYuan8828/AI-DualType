@@ -476,7 +476,7 @@ unsafe extern "system" fn main_wndproc(
                         {
                             let (dict_rows, user_words, _, _) = app.engine.stats();
                             format!(
-                                "MC-TypeToAnything · {} · 词库 {dict_rows} · 已学 {user_words}",
+                                "MC-DualType · {} · 词库 {dict_rows} · 已学 {user_words}",
                                 if app.engine.ascii_mode() { "英语" } else { "中文" }
                             )
                         },
@@ -700,9 +700,9 @@ impl App {
 
 fn tray_tooltip(ascii: bool) -> &'static str {
     if ascii {
-        "MC-TypeToAnything（英语模式）"
+        "MC-DualType（英语模式）"
     } else {
-        "MC-TypeToAnything（中文模式）"
+        "MC-DualType（中文模式）"
     }
 }
 

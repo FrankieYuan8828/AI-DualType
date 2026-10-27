@@ -323,7 +323,7 @@ fn attach_langbar(thread_mgr: &ITfThreadMgr, inner: &TextService) {
     let state_for_click = inner.state.clone();
     let button = crate::langbar::LangBarButton::new(
         icon_path.as_deref(),
-        "MC-TypeEnglish（左键切换中/英）".to_string(),
+        "MC-DualType（左键切换中/英）".to_string(),
         move || {
             let mut toggled = None;
             if let Ok(mut state) = state_for_click.lock() {

@@ -1,6 +1,6 @@
 # Changelog
 
-> **MC-TypeToAnything**: A bidirectional IME that makes learning English easy, and makes learning/typing Chinese effortless for foreigners.
+> **MC-DualType**: A bidirectional IME that makes learning English easy, and makes learning/typing Chinese effortless for foreigners.
 
 All notable changes to this project will be documented in this file.
 
@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added & Improved
 - **1-Click MSI Installer**: Added standard Windows `.msi` installer for effortless installation by non-technical users.
-- **Project Renamed**: Officially updated project name to **MC-TypeToAnything**.
+- **Project Renamed**: Officially updated project name to **MC-DualType**.
 - **Chinese Syllable Capacity & Paging Fixes**:
   - Fixed hard limit of 10 single characters per syllable in `build_dict.py`, increasing capacity to 100 characters per syllable.
   - Resolved missing character `浮` under `fu` (promoted to Candidate #3 on Page 1) and restored full access to `父`, `附`, `覆`, `复`, `扶`, `幅` etc. across multiple pages.

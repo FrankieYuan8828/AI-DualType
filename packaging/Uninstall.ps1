@@ -6,7 +6,7 @@
 param([switch]$DryRun)
 
 $ErrorActionPreference = 'SilentlyContinue'
-$AppName    = 'MC-TypeEnglish'
+$AppName    = 'MC-DualType'
 $InstallDir = Join-Path $env:ProgramFiles $AppName
 $clsidPath  = 'HKLM:\SOFTWARE\Classes\CLSID\{7C3E0C11-5F6A-4E52-9B2C-A1D47B2E9F31}\InprocServer32'
 $DllX64     = (Get-ItemProperty $clsidPath -ErrorAction SilentlyContinue).'(default)'

@@ -24,7 +24,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$AppName      = 'MC-TypeEnglish'
+$AppName      = 'MC-DualType'
 $SourceDir    = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $InstallDir   = Join-Path $env:ProgramFiles $AppName
 # 二进制放进「按内容哈希命名」的子目录：升级时新版本永远写新文件，

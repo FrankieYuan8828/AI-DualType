@@ -1,11 +1,11 @@
-# MC-TypeToAnything
+# MC-DualType
 
 ### 🌏 不仅方便学习英语，更方便老外学习中文的双向智能输入法
 
 > **这是一个不仅方便学习英语，更加方便老外学习中文的全新双向输入法！**  
 > 打拼音实时给出「中文 + 多语译文」；打英文直接智能反查中文，让双语互译、跨语言打字与语言学习零门槛融为一体。
 
-![MC-TypeToAnything Banner](image.png)
+![MC-DualType Banner](image.png)
 
 ---
 
@@ -16,14 +16,14 @@
 
 | 安装包类型 | 适用人群 | 下载链接 | 安装方式 |
 | :--- | :--- | :--- | :--- |
-| 📦 **Windows 标准安装包 (`.msi`)** | **🌟 强烈推荐（零基础首选）** | **[👉 点击下载最新 MSI 安装包 (GitHub Releases)](https://github.com/FrankieYuan8828/MC-TypeToAnything/releases/latest)** | **双击直接运行**，全自动注册系统服务 |
-| ⚡ **单文件独立安装包 (`Setup.exe`)** | 便携免额外依赖 / 自动提权 | **[👉 点击下载最新 Setup.exe](https://github.com/FrankieYuan8828/MC-TypeToAnything/releases/latest)** | 双击自解压并自动完成提权安装 |
+| 📦 **Windows 标准安装包 (`.msi`)** | **🌟 强烈推荐（零基础首选）** | **[👉 点击下载最新 MSI 安装包 (GitHub Releases)](https://github.com/FrankieYuan8828/MC-DualType/releases/latest)** | **双击直接运行**，全自动注册系统服务 |
+| ⚡ **单文件独立安装包 (`Setup.exe`)** | 便携免额外依赖 / 自动提权 | **[👉 点击下载最新 Setup.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/latest)** | 双击自解压并自动完成提权安装 |
 
 #### 📖 极简 3 步使用：
-1. **下载并双击运行** `MC-TypeToAnything-1.0.3.msi`。
+1. **下载并双击运行** `MC-DualType-1.0.3.msi`。
 2. 弹出 Windows 用户账户控制（UAC）提示时点击 **「是 / 允许」**，等待 2 秒安装完成。
-3. 按键盘快捷键 **`Win + 空格`** 切换到 **「MC-TypeToAnything」**，即可在所有软件（微信、QQ、Office、浏览器、游戏等）中直接打字！
-> 💡 **卸载非常简单**：可在 Windows **「设置 → 应用 → 已安装的应用」** 中找到「MC-TypeToAnything」一键安全卸载。
+3. 按键盘快捷键 **`Win + 空格`** 切换到 **「MC-DualType」**，即可在所有软件（微信、QQ、Office、浏览器、游戏等）中直接打字！
+> 💡 **卸载非常简单**：可在 Windows **「设置 → 应用 → 已安装的应用」** 中找到「MC-DualType」一键安全卸载。
 
 ---
 
@@ -87,13 +87,13 @@ TSF 实现细节与踩坑见 [docs/TSF-IMPLEMENTATION.md](docs/TSF-IMPLEMENTATIO
 ## 1. 安装
 
 ### 方式 A：MSI 极速安装（推荐普通用户）
-1. 前往 **[Releases 页面](https://github.com/FrankieYuan8828/MC-TypeToAnything/releases/latest)** 下载 `MC-TypeToAnything-1.0.3.msi`。
+1. 前往 **[Releases 页面](https://github.com/FrankieYuan8828/MC-DualType/releases/latest)** 下载 `MC-DualType-1.0.3.msi`。
 2. 双击运行，根据系统 UAC 提示点「允许/是」即可完成一键全自动安装与注册。
 3. 随时可在 Windows「设置 → 应用 → 安装的应用」里一键卸载或升级。
 
 ### 方式 B：便携独立包 / 脚本安装（适合开发者与免安装用户）
 ```text
-dist\MC-TypeToAnything\
+dist\MC-DualType\
 ├─ mcte_tsf.dll          64 位 TSF 文本服务
 ├─ mcte_tsf_x86.dll      32 位 TSF 文本服务（微信 / 老 Office 等 32 位应用用）
 ├─ mcte.exe              钩子版（可选，免管理员）
@@ -109,18 +109,18 @@ dist\MC-TypeToAnything\
 
 双击 `install.bat`，安装器会：
 
-1. 把二进制写进 `C:\Program Files\MC-TypeToAnything\bin-<内容哈希>\`（升级不被占用文件卡住）
+1. 把二进制写进 `C:\Program Files\MC-DualType\bin-<内容哈希>\`（升级不被占用文件卡住）
 2. `regsvr32` 注册 64 位文本服务：CLSID + TSF category + 语言配置（Win+Space 里那一项）
 3. `SysWOW64\regsvr32` 注册 32 位文本服务（同一 CLSID 的 WOW6432Node 分支）
 4. 写默认配置 / 开始菜单快捷方式 / 「应用和功能」卸载项
 
-安装完按 **Win+Space** 选「MC-TypeToAnything」即可。不需要重启，新开的程序立即生效。
+安装完按 **Win+Space** 选「MC-DualType」即可。不需要重启，新开的程序立即生效。
 
 只想要免管理员的钩子版：`install.bat -Hook`。
 试运行（不改系统）：`Install.ps1 -DryRun`。
 
-卸载：设置 → 应用 → 安装的应用 → MC-TypeToAnything；或运行安装目录的 `Uninstall.ps1`。
-配置、用户词库、日志保留在 `%APPDATA%\MC-TypeToAnything`（重装可继续用）。
+卸载：设置 → 应用 → 安装的应用 → MC-DualType；或运行安装目录的 `Uninstall.ps1`。
+配置、用户词库、日志保留在 `%APPDATA%\MC-DualType`（重装可继续用）。
 
 ---
 
@@ -377,7 +377,7 @@ rime-essay / phrase-pinyin-data / pinyin-data / OpenCC（词库数据）。本�
 
 ## 8. 更新日志
 
-详细版本历史请查看 [CHANGELOG.zh-CN.md](https://github.com/FrankieYuan8828/MC-TypeToAnything/blob/main/CHANGELOG.zh-CN.md)（中文）或 [CHANGELOG.md](https://github.com/FrankieYuan8828/MC-TypeToAnything/blob/main/CHANGELOG.md)（英文）。
+详细版本历史请查看 [CHANGELOG.zh-CN.md](https://github.com/FrankieYuan8828/MC-DualType/blob/main/CHANGELOG.zh-CN.md)（中文）或 [CHANGELOG.md](https://github.com/FrankieYuan8828/MC-DualType/blob/main/CHANGELOG.md)（英文）。
 
 ---
 
