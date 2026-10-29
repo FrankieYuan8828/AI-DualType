@@ -1,389 +1,209 @@
 # MC-DualType
 
-### 🌏 不仅方便学习英语，更方便老外学习中文的双向智能输入法
+### 🌏 A Revolutionary Bidirectional Smart Input Method for English Learners & Chinese Beginners
 
-> **这是一个不仅方便学习英语，更加方便老外学习中文的全新双向输入法！**  
-> 打拼音实时给出「中文 + 多语译文」；打英文直接智能反查中文，让双语互译、跨语言打字与语言学习零门槛融为一体。
+> **A brand-new bidirectional input method designed not only for learning English, but also for foreigners mastering Chinese!**  
+> Type Pinyin to receive "Chinese + multilingual translations" in real time. Type English for instant, intelligent Chinese reverse lookups. Seamlessly blends cross-language typing, bilingual translation, and language learning into a single, zero-barrier experience.
 
 ![MC-DualType Banner](image.png)
 
 ---
 
-### 🚀 小白 / 普通用户 1 秒极速上手（推荐 MSI 安装包）
+### 🚀 Quick Start for Everyone (Recommended Windows MSI Installer)
 
-> **不懂开源、不想配置编译环境或敲命令行？**  
-> 直接下载 Windows 官方标准 **MSI 安装包**，像安装普通微信、QQ 一样，**双击即可全自动完成安装与系统级输入法注册**！
+> **No developer experience, no compiler setup, and no command line needed!**  
+> Download the official standard Windows **MSI Installer**. Just double-click to install, and system-level input method registration completes automatically in seconds!
 
-| 安装包类型 | 适用人群 | 下载链接 | 安装方式 |
+| Package Type | Target Audience | Direct Download Link | Installation Method |
 | :--- | :--- | :--- | :--- |
-| 📦 **Windows 标准安装包 (`.msi`)** | **🌟 强烈推荐（零基础首选）** | **[👉 点击下载最新 MSI 安装包 (GitHub Releases)](https://github.com/FrankieYuan8828/MC-DualType/releases/latest)** | **双击直接运行**，全自动注册系统服务 |
-| ⚡ **单文件独立安装包 (`Setup.exe`)** | 便携免额外依赖 / 自动提权 | **[👉 点击下载最新 Setup.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/latest)** | 双击自解压并自动完成提权安装 |
+| 📦 **Windows Standard Installer (`.msi`)** | **🌟 Strongly Recommended (First Choice)** | **[👉 Download Latest MSI (v1.3.0)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0.msi)** | **Double-click to run**, fully automated system-level registration |
+| ⚡ **Standalone Setup Installer (`Setup.exe`)** | Portable / Single-file Self-elevating | **[👉 Download Latest Setup.exe (v1.3.0)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Setup.exe)** | Self-extracting with auto-elevation |
+| 🗜️ **Portable Distribution Archive (`.zip`)** | Portable / Manual Deployment | **[👉 Download Latest Portable.zip (v1.3.0)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Portable.zip)** | Unpack to folder, run `install.bat` |
+| 🔗 **All Releases on GitHub** | Release Archives & Notes | **[👉 Browse All Releases on GitHub](https://github.com/FrankieYuan8828/MC-DualType/releases)** | Check past releases and assets |
 
-#### 📖 极简 3 步使用：
-1. **下载并双击运行** `MC-DualType-1.0.3.msi`。
-2. 弹出 Windows 用户账户控制（UAC）提示时点击 **「是 / 允许」**，等待 2 秒安装完成。
-3. 按键盘快捷键 **`Win + 空格`** 切换到 **「MC-DualType」**，即可在所有软件（微信、QQ、Office、浏览器、游戏等）中直接打字！
-> 💡 **卸载非常简单**：可在 Windows **「设置 → 应用 → 已安装的应用」** 中找到「MC-DualType」一键安全卸载。
+#### 📖 3 Simple Steps to Start:
+1. **Download and double-click** `MC-DualType-1.3.0.msi`.
+2. When the Windows User Account Control (UAC) prompt appears, click **"Yes / Allow"**, and wait 2 seconds for installation to complete.
+3. Press **`Win + Space`** on your keyboard to switch to **"MC-DualType"**, and type directly in any application (WeChat, QQ, Microsoft Office, Chrome, Edge, IDEs, games, etc.)!
+> 💡 **Effortless Uninstallation**: You can cleanly uninstall MC-DualType at any time via Windows **"Settings → Apps → Installed apps"**.
 
 ---
 
-> 打拼音，候选窗直接给出 **中文 + 多语译文** 的层级候选；打英文，反查中文：
->
-> ```text
-> nihao
-> 1    你好
-> 1.1  hallo        （德语）
-> 1.2  hello        （英文）
-> 1.3  こんにちは    （日语）
-> 2    妳好
-> 3    你好啊
-> ```
->
-> 候选是**横向卡片**：上层中文、下层英文，两层共用一个编号。
-> 按 `1` 选中「你好」，**再按一次 `1` 切到下面那行英文**，空格上屏当前层；鼠标点哪层就选哪层。
-> 每页 7 组，`-` / `+`（或 PageUp / PageDown）翻页。
-> **单按 Shift** 快速切换中文与 ABC 英文输入模式（带悬浮状态气泡提示）。
-> 越用越懂你：常用词自动提前、上下文联想、生僻词自动学会。
->
-> 反过来也行：打 `hello` / `hallo` / `china` 出中文候选（`你好`、`中国`…）。
+## 📦 Version History & Release Packages
 
-**长串也能打**：连续拼音会做分词/组句（词频 Viterbi k-best），不是只认整词。
+Here is the complete version-by-version release breakdown with detailed upgrade/fix descriptions and download packages:
 
-```
+| Version | Release Date | Key Upgrades & Fixes | Download Assets |
+| :--- | :--- | :--- | :--- |
+| **v1.3.0** | 2026-10-29 | **V1.3 UI Redesign & Adaptive AI Workbench**: Pixel-perfect candidate box matching design mockup (`BUBBLE_LEFT_X = 33` left-aligned preedit pill, vertical `+` file multimodal and `📷` screen OCR tools); inner bilingual white card (`[译文] ⇄ [EN] ●`, 1-click copy `📋`, `[原文]`); bottom adaptive dialog input bar + dashed third-party button mapping area (`深度思考`, `联网`, `+上传`, `发送`); standalone AI Workbench window (`--workbench`); CDP bridge for Doubao Desktop (:9444) and DeepSeek browser (:9333); lexicon sharing tab in settings. | [📦 MSI (19.0 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0.msi) <br> [⚡ Setup.exe (72.6 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Setup.exe) <br> [🗜️ Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Portable.zip) |
+| **v1.2.0** | 2026-10-29 | **Lexicon Sharing & Third-Party CDP Integration**: Export/import custom vocabulary packages with high-frequency boosting; settings tab for lexicon sharing; enhanced browser/desktop client CDP bridges. | [📦 MSI (18.8 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.2.0/MC-DualType-1.2.0.msi) <br> [⚡ Setup.exe (72.2 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.2.0/MC-DualType-Setup.exe) |
+| **v1.1.2** | 2026-10-28 | **Overlay Fixes, OLE/COM File Upload & Anti-Drift**: Resolved stuck screen overlay with Esc dismissal and 90s self-healing timeout; fixed modal file dialog COM initialization bug (`GetOpenFileNameW`); eliminated hardcoded candidate mock data preventing candidate window drift; TSF build visibility sync. | [📦 MSI (16.9 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.1.2/MC-DualType-1.1.2.msi) <br> [⚡ Setup.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.1.2/MC-DualType-Setup.exe) |
+| **v1.1.1** | 2026-10-28 | **Settings Crash & Off-screen Layout Fixes**: Resolved Win32 `RefCell` re-entrancy crash during bridge scanning; fixed bottom buttons clipped by window borders under high-DPI scaling (175%); dynamic client-area anchoring; scan button single-flight protection. | [📦 MSI (16.9 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.1.1/MC-DualType-1.1.1.msi) |
+| **v1.1.0** | 2026-10-28 | **AI Access, Multimodal Recognition & Expandable Slider**: AI Access Option 1 (API Key) & Option 2 (Local bridge scanner for Ollama, LM Studio, etc.); multimodal file upload (`+`) & marquee screen snapshot (`📷`); rare character and translation self-upgrading closed loop; expandable slider UI. | [📦 MSI (16.9 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.1.0/MC-DualType-1.1.0.msi) |
+| **v1.0.5** | 2026-10-27 | **English Mode Upgrade & Deduplication**: Semantic deduplication of inflected English words; single-tap Shift mode toggle; pure Space typing in English mode; Enter to confirm raw input; fixed consecutive duplicate character dropping (`moracall`); Chinese variant normalization (`妳` -> `你`). | [📦 MSI (5.59 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.0.5/MC-DualType-1.0.5.msi) |
+| **v1.0.4** | 2026-10-27 | **UI Modernization**: Protruding preedit pill tab with GDI region combination (`CombineRgn`); card-style candidate containers with accent blue highlighters; international language badges (`EN`, `JA`, `DE`). | [📦 MSI (5.25 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.0.4/MC-DualType-1.0.4.msi) |
+| **v1.0.3** | 2026-10-27 | **Official Name Update & 1-Click MSI**: Renamed to MC-DualType; introduced 1-click Windows MSI installer; expanded syllable character capacity to 100 per syllable (`fu` -> `浮`); restored all single-letter English headwords `a`..`z` and irregular verb forms. | [📦 MSI (5.25 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.0.3/MC-DualType-1.0.3.msi) |
+| **v1.0.2** | 2026-10-26 | **Sentence Segmentation Enhancement**: Viterbi k-best pinyin sentence segmentation optimization; installer registry cleanup scripts. | [📦 MSI (5.02 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.0.2/MC-TypeEnglish-1.0.2.msi) |
+| **v1.0.1** | 2026-10-26 | **Offline Reverse Dictionary**: Integrated CC-CEDICT Chinese-English reverse lookup with offline dictionary engine. | [📦 Release Assets](https://github.com/FrankieYuan8828/MC-DualType/releases) |
+| **v1.0.0** | 2026-10-26 | **Initial Public Release**: Dual architecture (TSF text service + Hook fallback); hierarchical bilingual candidate display; local offline learning. | [📦 Release Assets](https://github.com/FrankieYuan8828/MC-DualType/releases/tag/v1.0.0) |
+
+---
+
+## ✨ Core Features & Innovations
+
+### 1. Bidirectional Typing & Learning
+- **Type Pinyin, Get Chinese + Multilingual Translations**:
+  ```text
+  nihao
+  1    你好
+  1.1  hallo        (German)
+  1.2  hello        (English)
+  1.3  こんにちは    (Japanese)
+  2    妳好
+  3    你好啊
+  ```
+- **Hierarchical Card Interaction**:
+  - Press `1` to select candidate #1 (focused on the Chinese line).
+  - Press `1` **a second time** to toggle selection to the English translation line.
+  - Press `Space` to commit whichever line is active. Mouse clicks directly select your desired tier!
+- **Type English, Instant Chinese Reverse Lookup**:
+  - Type `hello`, `hallo`, `computer`, or `china` to immediately receive Chinese candidates (`你好`, `计算机`, `中国`…).
+
+### 2. Long Pinyin Sentence Segmentation
+Full sentence segmentation using frequency-weighted Viterbi k-best search:
+```text
 bukeyitihuan        → 1 不可以替换   2 不可一替换 …
 womenmingtiankaishi → 1 我们明天开始
 xiexienile          → 1 谢谢你了
 ```
 
-**质量是可量化的**（`mcte.exe --eval tools\eval_cases.tsv`，232 条用例）：
+### 3. Quantitative Typing Quality (Evaluated on 232 test cases)
+| Metric | Full Benchmark | Without Manual Correction Table |
+| :--- | :--- | :--- |
+| **top-1 Accuracy** | **95.7%** | **94.6%** |
+| **top-3 Accuracy** | **99.6%** | **99.3%** |
 
-| 指标 | 全部用例 | 去掉人工校正表 |
-|---|---|---|
-| top-1 | 95.7% | 94.6% |
-| top-3 | 99.6% | 99.3% |
+*(Detailed breakdown available in [docs/EVAL.md](docs/EVAL.md))*
 
-明细与已知短板见 [docs/EVAL.md](docs/EVAL.md)。
-
-**译文覆盖率**（实测 `--probe` 可查）：
-
-| 数据 | 规模 | 来源 |
-|---|---|---|
-| 中文 → 英文 | **57,437** 词（几乎任何常用中文词都有英文子项） | CC-CEDICT |
-| 英文 → 中文 | **39,850** 个英文词头 | CC-CEDICT 反查 + 手写表 |
-| 中文 → 德/日/法/西 | 53 个高频词（`data/glossary.tsv`，可自己加） | 手写 |
-
-Windows 11 输入法，两种形态共用同一套引擎与词库：
-
-| 形态 | 组件 | 出现在 Win+Space | 提权窗口可用 | 需要管理员 |
-|---|---|---|---|---|
-| **TSF 文本服务**（推荐） | `mcte_tsf.dll` + `mcte_tsf_x86.dll` | ✅ | ✅ | 安装时一次 |
-| 钩子版（备用） | `mcte.exe` | ❌ | ❌ | 不需要 |
-
-产品思路来自对 TypeAnything 的逆向（见 [docs/RE-TypeAnything.md](docs/RE-TypeAnything.md)），
-TSF 实现细节与踩坑见 [docs/TSF-IMPLEMENTATION.md](docs/TSF-IMPLEMENTATION.md)。
+### 4. Offline Dictionary Scale
+| Data Source | Vocabulary Count | Description |
+| :--- | :--- | :--- |
+| **Chinese → English** | **57,437** entries | CC-CEDICT comprehensive bilingual definitions |
+| **English → Chinese** | **39,850** headwords | Instant reverse lookup with inflected forms |
+| **Chinese → Multilingual** | German, Japanese, French, Spanish | Expandable via `data/glossary.tsv` or AI |
 
 ---
 
-## 1. 安装
+## 🎨 V1.3 UI Architecture & AI Workbench
 
-### 方式 A：MSI 极速安装（推荐普通用户）
-1. 前往 **[Releases 页面](https://github.com/FrankieYuan8828/MC-DualType/releases/latest)** 下载 `MC-DualType-1.0.3.msi`。
-2. 双击运行，根据系统 UAC 提示点「允许/是」即可完成一键全自动安装与注册。
-3. 随时可在 Windows「设置 → 应用 → 安装的应用」里一键卸载或升级。
+The V1.3 layout accurately reproduces the modern, clean interface from the design specifications:
 
-### 方式 B：便携独立包 / 脚本安装（适合开发者与免安装用户）
-```text
-dist\MC-DualType\
-├─ mcte_tsf.dll          64 位 TSF 文本服务
-├─ mcte_tsf_x86.dll      32 位 TSF 文本服务（微信 / 老 Office 等 32 位应用用）
-├─ mcte.exe              钩子版（可选，免管理员）
-├─ data\dict.txt         离线词库：141,119 条
-├─ data\dict_en.tsv      中文→英文：57,437 词（CC-CEDICT）
-├─ data\en2zh.tsv        英文→中文反查：39,850 词头
-├─ data\glossary.tsv     手写多语词表（德/日/法/西，可自己加）
-├─ mcte.ico              输入法图标（语言栏里那个 MC）
-├─ tools\mcte-tsf-selftest.exe   COM 自检工具
-├─ install.bat           ← 双击安装（会请求管理员权限）
-└─ Uninstall.ps1         卸载
-```
-
-双击 `install.bat`，安装器会：
-
-1. 把二进制写进 `C:\Program Files\MC-DualType\bin-<内容哈希>\`（升级不被占用文件卡住）
-2. `regsvr32` 注册 64 位文本服务：CLSID + TSF category + 语言配置（Win+Space 里那一项）
-3. `SysWOW64\regsvr32` 注册 32 位文本服务（同一 CLSID 的 WOW6432Node 分支）
-4. 写默认配置 / 开始菜单快捷方式 / 「应用和功能」卸载项
-
-安装完按 **Win+Space** 选「MC-DualType」即可。不需要重启，新开的程序立即生效。
-
-只想要免管理员的钩子版：`install.bat -Hook`。
-试运行（不改系统）：`Install.ps1 -DryRun`。
-
-卸载：设置 → 应用 → 安装的应用 → MC-DualType；或运行安装目录的 `Uninstall.ps1`。
-配置、用户词库、日志保留在 `%APPDATA%\MC-DualType`（重装可继续用）。
+1. **Candidate Box**:
+   - **Left-aligned Preedit Capsule**: Pinned at `x = 33`, floating gracefully above the candidate frame.
+   - **Left Vertical Toolbar**: `+` button (file upload & document OCR) and `📷` button (screen snapshot marquee OCR).
+   - **Modern Rounded Cards**: Clean margins, subtle pagination chevrons `‹` and `›`, zero visual clutter.
+2. **Adaptive Bilingual AI Slider & Workbench**:
+   - **Bilingual Comparison Card**: Inner pure white card with `[译文] ⇄ [EN] ●` status pill, bold headline, auto-wrapped body text, middle dashed divider line, and interactive 1-click clipboard copy button `📋`.
+   - **Adaptive Dialog Input Bar**: Automatically stretches and resizes with the window width; supports direct keyboard input, Enter to send, Shift+Enter for newline, Esc to close.
+   - **Dashed Third-Party Button Mapping Area**: Adaptive container wrapped with `#787878` dashed border containing mapped buttons: `深度思考` (Deep Thinking), `联网` (Web Search), `+上传` (Upload), and `发送` (Send).
+   - **Standalone AI Workbench (`--workbench`)**: Can be opened independently at any time via system tray menu or shortcut.
 
 ---
 
-## 2. 用法
+## ⚙️ Configuration (`config.json`)
 
-| 操作 | 效果 |
-|---|---|
-| 打 `nihao` | 候选窗：`1 你好`、`1.1 hallo`、`1.2 hello`、`1.3 こんにちは`、`2 妳好`… |
-| `1` | 选中第 1 组，落在**中文层** |
-| `1` `1` | 同一组再按一次，切到**英文层**；再按切回中文 |
-| 空格 / 回车 | 上屏当前高亮那一层（中文或英文） |
-| 鼠标点击 | 点上层的字上屏中文，点下层上屏英文 |
-| `-` / `+`（或 PageUp/PageDown） | 上下翻页（每页 7 组） |
-| 空格 / 回车 | 上屏当前高亮候选 |
-| ↑ ↓ ← → | 移动高亮 |
-| Esc | 取消这次输入 |
-| Backspace | 先退层级标签，再退拼音 |
-| `,` `.` `?` `!` 等 | 自动转中文标点并上屏 |
-| **Shift**（单按） | **中文 / ABC 英文模式切换**（伴随悬浮状态气泡提示；组合键或按住打大写不触发） |
-| **Ctrl+Alt+P** | 中文 / ABC 模式全局热键切换（可在 `config.json` 中自定义） |
-
-**中/英模式切换**：支持**单按 Shift 键**或 **Ctrl+Alt+P** 自由切换中文 / ABC 英文输入模式。切换时会有「中文模式 / ABC 英文模式」浮动状态气泡提示；按住 Shift 输入大写字母或使用系统组合快捷键时经过防误触处理，不会误切换。切英文也可以随时按 Win+Space 切换系统输入法。
-
----
-
-## 3. 配置说明
-
-本项目秉承轻量无干扰的原则，配置分为 **「候选窗快速设置」** 和 **「高级 JSON 配置文件」**：
-
-### 3.1 候选窗右上角「设置」按钮（界面操作）
-
-候选窗右上角的 **设置** 按钮是一个即点即选的轻量弹窗，**专用于切换第二跟随语言**：
-- **英文永远固定跟随**，在此列表中你可以选择额外跟随的一种语言（德语 / 法语 / 日语 / 韩语 / 俄语 / 西班牙语 / 意大利语 / 葡萄牙语），或选择「不额外语言」。
-- 选中的语言会作为英文下方的一行出现在候选卡片中：
-  ```text
-  1 你好
-    英文 hello
-    德语 hallo        ← 这里就是你选的那一种
-  ```
-- **点击即生效**，同时自动保存回 `config.json`。
-> 💡 *注：为了保证输入法界面的极致纯粹与零干扰，该界面只保留语种单选，不提供多余的输入框或复杂表单。*
-
-### 3.2 高级配置文件（`config.json`）
-
-完整的运行参数保存在 `%APPDATA%\MC-TypeEnglish\config.json` 中（可用记事本等任意文本编辑器直接修改）：
-- 钩子版：托盘菜单点击「重新加载配置与词库」即生效；
-- TSF 版：下次聚焦窗口激活时生效。
+Configuration is located at `%APPDATA%\MC-TypeEnglish\config.json`:
 
 ```json
 {
-  "extra_language": "de",          // 除英文外再跟随一种语言；null = 只跟英文（可由右上角设置自动写入）
-  "toggle_hotkey": "Ctrl+Alt+P",   // 备用切换热键
-  "max_parents": 9,                // 一级候选数（上限 9，对应数字键）
-  "max_children": 4,               // 每个候选最多几行译文
-  "web_translate": true,           // 用免费公开翻译端点补全生词译文（免配置、免 API key）
-  "prefix_search": true,           // 边打边匹配前缀（nih -> 你好）
-  "learn_enabled": true,           // 自学习开关：词频 / 联想 / 生僻词记忆
-  "ai_spell_fallback": true,       // 词库查不到时用 AI 兜底并记进用户词库（需开启下方 AI）
+  "extra_language": "de",          // Second follow language (de/fr/ja/ko/ru/es/it/pt/null)
+  "toggle_hotkey": "Ctrl+Alt+P",   // Alternate global toggle hotkey
+  "max_parents": 9,                // Maximum primary candidates (1..9)
+  "max_children": 4,               // Maximum translation sub-rows per candidate
+  "web_translate": true,           // Free public translation fallback for new words
+  "prefix_search": true,           // Prefix matching while typing (nih -> 你好)
+  "learn_enabled": true,           // Offline self-learning: word frequency, bigram, spelling memory
+  "ai_spell_fallback": true,       // AI assistance for rare words
   "ai": {
-    "enabled": false,              // 【可选高级功能】默认 false 纯离线运行，无需任何 API Key
-    "host": "api.deepseek.com",    // 兼容任何 OpenAI 规范的接口端点
-    "path": "/v1/chat/completions",
+    "enabled": false,              // Optional AI capability (fully offline by default)
+    "base_url": "https://api.deepseek.com/v1",
     "model": "deepseek-chat",
-    "api_key": ""                  // 需手动在 json 文件中填写（输入法界面不提供也不收集密钥输入框）
+    "api_key": ""
   }
 }
 ```
 
-### 3.3 译文与翻译来源
-
-输入法的译文按以下优先级获取：
-1. **本地离线词表（首选，秒出）**：`data/glossary.tsv` 手写表 + CC-CEDICT 5.7 万词中英对照；
-2. **免费网页公开翻译（兜底）**：本地没有收录的词，后台异步通过公开公共翻译端点补全（结果内存缓存 6 小时，免配置、不需要 API Key）；
-3. **可选 AI 模型（进阶）**：若用户自行在 `config.json` 中开启了 `ai.enabled` 并配置了 `api_key`，则优先由大模型提供整句精细翻译与生僻词补全。
-
-网络请求走系统代理（认系统局域网设置及 `HTTPS_PROXY`），4 秒超时静默放弃，**绝对不会阻塞打字与上屏**。
-
-### 装完在 Win+Space 里看不到？
-
-按顺序自查（`verify_winswitch.ps1` 会自动完成前两步的检查）：
-
-```powershell
-Get-WinUserLanguageList | ForEach-Object { $_.LanguageTag; $_.InputMethodTips }
-```
-
-1. **列表里有没有 MC-TypeEnglish**：只有 `{81D4E9C9-…}`（微软拼音）说明它没进用户列表
-   → 以管理员身份重跑 `Install.ps1`（会调 `EnableLanguageProfile` + 补 HKCU 并重启 ctfmon）。
-2. **语言选项里确认**：设置 → 时间和语言 → 语言和区域 → 中文(简体) → 语言选项 → 键盘。
-3. 仍然没有：注销再登录一次（输入法列表在登录时缓存）。
-4. 能看到但不能打字：把 `%APPDATA%\MC-TypeEnglish\mcte.log` 末尾几行发我，
-   里面会记 `tsf activate` / `engine unavailable` 这类线索。
-
-### 更新后「没变化」怎么办（重要）
-
-TSF 组件是**加载进每个宿主进程**的 DLL，装完新版本后：
-
-- **新打开的程序**立刻用新版本；
-- **已经在运行的程序**（浏览器 / IDE / 微信 / 资源管理器）仍然握着旧 DLL，直到你重启它们；
-- 最稳的一次性做法：重启 Windows。
-
-数据文件（`data\*.tsv`）跟着安装目录走，但旧 DLL 可能读不懂新格式，
-所以**别在没重启应用的情况下测试新版本**，否则可能看到 `你好:1482` 这种脏候选。
-
-查一下谁还握着旧 DLL：
-
-```powershell
-Get-Process | ForEach-Object { $p = $_; try { $p.Modules | Where-Object { $_.ModuleName -like 'mcte_tsf*' } | ForEach-Object { "{0} ({1}) -> {2}" -f $p.ProcessName, $p.Id, $_.FileName } } catch {} }
-```
-
-### 终端里（Windows Terminal / VS Code 终端 / MobaXterm）打不出中文？
-
-TSF 是**按窗口**激活的，而且终端类程序用的是 ACP 文本存储：
-
-1. 先在那个终端窗口里按 **Win+Space** 切到 MC-TypeEnglish（任务栏指示器会变）；
-2. 切了仍打不出字 → 现在会自动退回 `SendInput` 注入（日志里有一行
-   「宿主不支持 TIP 插入，改用 SendInput 注入」）；
-3. 如果连切都切不到（Win+Space 里没有它）→ **终端模式**：
-   开始菜单 → 「MC-TypeEnglish 终端模式」（等价于 `mcte.exe --terminal-only`）。
-   它只在前台是终端类窗口（Windows Terminal / conhost / mintty / VS Code）时接管按键，
-   其它窗口一律让给 TSF 版，所以两者可以同时跑、不会抢键。
-
-   实测结论：Windows Terminal 从不会加载我们的 TSF 组件（日志里 0 条 `host=WindowsTerminal.exe`），
-   这是终端宿主的限制，不是注册问题 —— 钩子 + `SendInput` 是终端里唯一可靠的路径。
-
-看日志确认是哪个程序在调我们：
-
-```powershell
-Select-String -Path "$env:APPDATA\MC-TypeEnglish\mcte.log" -Pattern 'tsf activate' | Select-Object -Last 5
-```
-
-### 可执行文件在哪
-
-- `C:\Program Files\MC-TypeEnglish\mcte.exe` —— 命令行工具 + 钩子版（**TSF 版不需要运行它**）
-- `C:\Program Files\MC-TypeEnglish\bin-<内容哈希>\mcte_tsf.dll|mcte_tsf_x86.dll` —— TSF 组件
-- 开始菜单里有「MC-TypeEnglish 工具（自检·诊断）」直接打开一个能跑这些命令的窗口：
-
-```powershell
-mcte.exe --probe nihao                      # 打印候选树
-mcte.exe --probe bukeyitihuan                # 看长串组句
-mcte.exe --eval tools\eval_cases.tsv         # 跑 232 条评测集
-mcte.exe --selftest                          # 自学习 4 条断言
-mcte.exe                                     # 启动钩子版（免管理员备用）
-```
-
-### 自学习（`%APPDATA%\MC-TypeEnglish\userdb.json`）
-
-三张表，全部来自你自己的输入，不联网：
-
-| 表 | 作用 | 效果 |
-|---|---|---|
-| `words` | 每个词的选词次数 + 最近使用时间 | 常用词自动提前（对数加权，第 100 次不会把第 1 次压死） |
-| `bigrams` | 上一个词 → 这个词的共现次数 | 打完「报告」再打 `bumen`，「部门」优先（上下文联想） |
-| `spellings` | 拼音 → 你实际选过的词 | 生僻词/自造词选过一次就进候选，**下次完全离线可用** |
-
-生僻词自动迭代：拼音在词库里查不到时，若开了 AI，后台异步问一次并把结果写进
-`spellings`；之后同一个拼音永久离线出词。词库文件本身不需要重建。
-
-验证命令（不发一个键就能看到效果）：
-
-```powershell
-mcte.exe --selftest                 # 词频 / 联想 / 生僻词 / 译文不入库，4 条断言
-mcte.exe --probe nihao              # 直接看候选树
-mcte.exe --learn wanshang 晚上 5     # 教它 5 次，再看候选顺序
-```
-
 ---
 
-## 4. 架构
+## 🏗️ System Architecture
+
+MC-DualType provides two deployment models sharing the exact same core engine:
+
+| Form Factor | Components | Appears in Win+Space | Elevated Windows Support | Requires Admin |
+| :--- | :--- | :--- | :--- | :--- |
+| **TSF Text Service (Recommended)** | `mcte_tsf.dll` + `mcte_tsf_x86.dll` | ✅ Yes | ✅ Yes | Once during install |
+| **Hook Engine (Fallback)** | `mcte.exe` | ❌ No | ❌ No | ❌ No |
 
 ```text
-core/   mcte-core            纯逻辑 + 候选窗，两个外壳共用
-         ├ engine.rs         按键状态机（无 unsafe，41 个单测覆盖）
-         ├ dict.rs           拼音 → 汉字（二分前缀查找，141k 条）
-         ├ glossary.rs       汉字 → 多语译文（本地，秒出）
-         ├ userdb.rs         自学习：词频 / 联想 / 生僻词编码
-         ├ ai.rs             可选 AI：译文补全 + 生僻词兜底
-         ├ window.rs         候选窗（GDI 自绘，1 / 1.1 / 2 层级编号）
-         └ inject.rs         SendInput(KEYEVENTF_UNICODE) 上屏
-app/    mcte.exe             WH_KEYBOARD_LL 全局钩子 + 托盘
-tsf/    mcte_tsf.dll         TSF 文本服务：ITfKeyEventSink + ITfInsertAtSelection
-        mcte-tsf-selftest    不需要管理员就能验证 COM 面（工厂/接口/引用计数）
+core/   mcte-core            Core pinyin engine, dictionaries, learning & candidate UI
+         ├ engine.rs         Keyboard state machine (safe Rust, 41 unit tests)
+         ├ dict.rs           Pinyin -> Chinese (binary prefix search, 141k words)
+         ├ glossary.rs       Chinese -> Multilingual translations (offline, instant)
+         ├ userdb.rs         Self-learning: frequency, bigrams, spelling memory
+         ├ ai.rs             AI translation & multimodal assistance
+         ├ backend.rs        Unified backend router & third-party button mappings
+         ├ workbench.rs      Adaptive independent AI Workbench window
+         ├ window.rs         Candidate & slider window (pixel-perfect GDI)
+         └ inject.rs         SendInput Unicode text injection
+app/    mcte.exe             WH_KEYBOARD_LL global hook + system tray + CLI
+tsf/    mcte_tsf.dll         Windows Text Services Framework (x64 & x86)
+packaging/                   MSI & Standalone Setup WiX toolchain
 ```
-
-```text
-钩子版： 键盘事件 ──▶ hook ──▶ engine ──▶ SendInput(unicode) ──▶ 文档
-TSF 版： ITfKeyEventSink::OnKeyDown ──▶ engine
-                                  └──▶ ITfEditSession ──▶ ITfInsertAtSelection ──▶ 文档
-```
-
-TSF 版是**进程内**组件，所以管理员权限的窗口里照样能用（不受 UIPI 限制），
-这是钩子版做不到的；反过来钩子版不需要管理员，装不上时还能兜底。
 
 ---
 
-## 5. 已知限制
+## 🛠️ Build from Source
 
-| 限制 | 说明 |
-|---|---|
-| 没有 inline preedit | 拼音与候选都画在自绘候选窗里，不写进文档（因此不会污染宿主文本、也不依赖 composition 生命周期） |
-| 32 位应用需要 32 位 DLL | 安装器已自动注册；若只手动 `regsvr32` 了 64 位那个，微信等 32 位程序里不会生效 |
-| 候选窗跟光标位置靠 `GetGUIThreadInfo` | 少数自绘控件（部分 Electron / 游戏）拿不到光标矩形，会退化为鼠标位置 |
-| 词库 14 万条 + 用户自学习 | 极生僻词首次仍需 AI 兜底或手动选一次；没有它，按空格会把拼音原样上屏（不吞字） |
-| 英文反查与拼音共用候选列表 | `china` 既是英文也是合法拼音（chi+na），靠词频决定谁在前；纯英文词（`hello`）会直接出中文 |
-| 中文→德/日/法/西只有手写词表 | 需要更多语种就往 `data/glossary.tsv` 加行，或打开 AI 让模型补 |
-| 升级时旧版本目录可能残留 | 被长驻进程（explorer）占用的旧 `bin-*` 删不掉，重装或重启后自动清 |
+### Prerequisites
+- Windows 10 / 11 (x64)
+- Rust stable toolchain with both `x86_64-pc-windows-msvc` and `i686-pc-windows-msvc` targets:
+  ```powershell
+  rustup target add i686-pc-windows-msvc
+  ```
+- .NET WiX toolset (optional, for MSI packaging):
+  ```powershell
+  dotnet tool install --global wix
+  ```
 
----
-
-## 6. 构建与验证
-
+### Build Commands
 ```powershell
-# 生成词库（数据源见 tools/build_dict.py 顶部注释）
-python tools\build_dict.py
+# 1. Run all workspace unit tests (132 tests)
+cargo test --workspace
 
-# 编译（x64 + x86）
+# 2. Build release binaries (x64 & x86)
 cargo build --release -p mcte -p mcte-tsf
 cargo build --release -p mcte-tsf --target i686-pc-windows-msvc --lib
 
-# 组装发布包（含语法/编码检查与指纹清单）
-powershell -ExecutionPolicy Bypass -File tools\stage_dist.ps1
-
-# 测试
-cargo test                                 # 41 passed
-target\release\mcte.exe --selftest          # 自学习 4 条断言
-dist\MC-TypeEnglish\tools\mcte-tsf-selftest.exe dist\MC-TypeEnglish\mcte_tsf.dll   # COM 8 条断言
-
-# 端到端（真按键 + 真上屏 + 截图）
-powershell -ExecutionPolicy Bypass -File tools\verify_e2e.ps1   # 钩子版 7 项
-powershell -ExecutionPolicy Bypass -File tools\verify_tsf.ps1   # TSF 版 6 项（需先安装）
+# 3. Build MSI & Setup installers into dist/v1.3.0
+powershell -ExecutionPolicy Bypass -File tools\build_msi.ps1 -Version 1.3.0
 ```
 
-验证留档在 `screenshots/`：`e2e-*`（钩子版）、`tsf-*`（TSF 版真机打字）。
+---
+
+## 📄 License & Acknowledgments
+
+This project is open-sourced under the **MIT License**.
+
+**Upstream Credits & References**:
+- **TypeAnything**: Product concept and packaging inspiration.
+- **librime / Weasel**: TSF and Chinese pinyin engine paradigms.
+- **CC-CEDICT / rime-essay / phrase-pinyin-data**: Lexical dictionary and frequency data.
 
 ---
 
-## 7. 目录
-
-```text
-core/       mcte-core：引擎 / 词库 / 学习 / 候选窗（可单测）
-app/        mcte.exe：钩子版外壳
-tsf/        mcte_tsf.dll：TSF 文本服务 + COM 自检工具
-packaging/  Install.ps1 / Uninstall.ps1 / install.bat
-data/       dict.txt（生成物）+ glossary.tsv（可手改）
-tools/      build_dict.py / stage_dist.ps1 / deploy_tsf.ps1 / verify_e2e.ps1 / verify_tsf.ps1
-docs/       RE-TypeAnything.md（逆向报告）/ TSF-IMPLEMENTATION.md（TSF 实现与踩坑）
-dist/       可直接安装的发布包
-screenshots/ 验证截图
-```
-
-上游致谢：TypeAnything（产品思路与安装链参考）、librime / Weasel（TSF 与拼音引擎范式）、
-rime-essay / phrase-pinyin-data / pinyin-data / OpenCC（词库数据）。本项目代码以 MIT 发布。
-
----
-
-## 8. 更新日志
-
-详细版本历史请查看 [CHANGELOG.zh-CN.md](https://github.com/FrankieYuan8828/MC-DualType/blob/main/CHANGELOG.zh-CN.md)（中文）或 [CHANGELOG.md](https://github.com/FrankieYuan8828/MC-DualType/blob/main/CHANGELOG.md)（英文）。
-
----
-
-## 9. 作者
+## 👤 Author
 
 **FrankieYuan8828**
-- 邮箱：[frankieyuan.yyd@gmail.com](mailto:frankieyuan.yyd@gmail.com)
-- GitHub：[https://github.com/FrankieYuan8828](https://github.com/FrankieYuan8828)
-
+- **Email**: [frankieyuan.yyd@gmail.com](mailto:frankieyuan.yyd@gmail.com)
+- **GitHub**: [https://github.com/FrankieYuan8828](https://github.com/FrankieYuan8828)
+- **Project Repository**: [https://github.com/FrankieYuan8828/MC-DualType](https://github.com/FrankieYuan8828/MC-DualType)
