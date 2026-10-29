@@ -35,7 +35,7 @@ Here is the complete version-by-version release breakdown with detailed upgrade/
 
 | Version | Release Date | Key Upgrades & Fixes | Download Assets |
 | :--- | :--- | :--- | :--- |
-| **v1.3.0** | 2026-10-29 | **V1.3 UI Redesign & Adaptive AI Workbench**: Pixel-perfect candidate box matching design mockup (`BUBBLE_LEFT_X = 33` left-aligned preedit pill, vertical `+` file multimodal and `📷` screen OCR tools); inner bilingual white card (`[译文] ⇄ [EN] ●`, 1-click copy `📋`, `[原文]`); bottom adaptive dialog input bar + dashed third-party button mapping area (`深度思考`, `联网`, `+上传`, `发送`); standalone AI Workbench window (`--workbench`); CDP bridge for Doubao Desktop (:9444) and DeepSeek browser (:9333); lexicon sharing tab in settings. | [📦 MSI (19.0 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0.msi) <br> [⚡ Setup.exe (72.6 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Setup.exe) <br> [🗜️ Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Portable.zip) |
+| **v1.3.0** | 2026-10-29 | **V1.3 UI Redesign & Doubao-Style Instant AI Workbench**: Streamlined candidate box with left-aligned preedit pill (`BUBBLE_LEFT_X = 34`) and clean symmetric margins (removed redundant sidebar buttons for a distraction-free typing experience); standalone AI Workbench window summoned instantly via global shortcut **`Ctrl + Alt + Space`** with zero reboot required; inner bilingual white card (`[译文] ⇄ [EN] ●`, 1-click copy `📋`, `[原文]`); bottom adaptive dialog input bar + dashed third-party button mapping area (`深度思考`, `联网`, `+上传`, `发送`); robust cursor positioning preventing off-screen drifts in modern apps (Chrome, WeChat, VS Code); CDP bridge for Doubao Desktop (:9444) and DeepSeek browser (:9333); lexicon sharing. | [📦 MSI (19.0 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0.msi) <br> [⚡ Setup.exe (72.6 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Setup.exe) <br> [🗜️ Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Portable.zip) |
 | **v1.2.0** | 2026-10-29 | **Lexicon Sharing & Third-Party CDP Integration**: Export/import custom vocabulary packages with high-frequency boosting; settings tab for lexicon sharing; enhanced browser/desktop client CDP bridges. | [📦 MSI (18.8 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.2.0/MC-DualType-1.2.0.msi) <br> [⚡ Setup.exe (72.2 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.2.0/MC-DualType-Setup.exe) |
 | **v1.1.2** | 2026-10-28 | **Overlay Fixes, OLE/COM File Upload & Anti-Drift**: Resolved stuck screen overlay with Esc dismissal and 90s self-healing timeout; fixed modal file dialog COM initialization bug (`GetOpenFileNameW`); eliminated hardcoded candidate mock data preventing candidate window drift; TSF build visibility sync. | [📦 MSI (16.9 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.1.2/MC-DualType-1.1.2.msi) <br> [⚡ Setup.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.1.2/MC-DualType-Setup.exe) |
 | **v1.1.1** | 2026-10-28 | **Settings Crash & Off-screen Layout Fixes**: Resolved Win32 `RefCell` re-entrancy crash during bridge scanning; fixed bottom buttons clipped by window borders under high-DPI scaling (175%); dynamic client-area anchoring; scan button single-flight protection. | [📦 MSI (16.9 MB)](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.1.1/MC-DualType-1.1.1.msi) |
@@ -94,19 +94,38 @@ xiexienile          → 1 谢谢你了
 
 ---
 
-## 🎨 V1.3 UI Architecture & AI Workbench
+## 🎨 UI Architecture, AI Workbench & Version Screenshots
 
-The V1.3 layout accurately reproduces the modern, clean interface from the design specifications:
+### 1. Version 1.3.0 (Latest Release): Streamlined Candidate UI & Instant AI Workbench
 
-1. **Candidate Box**:
-   - **Left-aligned Preedit Capsule**: Pinned at `x = 33`, floating gracefully above the candidate frame.
-   - **Left Vertical Toolbar**: `+` button (file upload & document OCR) and `📷` button (screen snapshot marquee OCR).
-   - **Modern Rounded Cards**: Clean margins, subtle pagination chevrons `‹` and `›`, zero visual clutter.
-2. **Adaptive Bilingual AI Slider & Workbench**:
-   - **Bilingual Comparison Card**: Inner pure white card with `[译文] ⇄ [EN] ●` status pill, bold headline, auto-wrapped body text, middle dashed divider line, and interactive 1-click clipboard copy button `📋`.
-   - **Adaptive Dialog Input Bar**: Automatically stretches and resizes with the window width; supports direct keyboard input, Enter to send, Shift+Enter for newline, Esc to close.
-   - **Dashed Third-Party Button Mapping Area**: Adaptive container wrapped with `#787878` dashed border containing mapped buttons: `深度思考` (Deep Thinking), `联网` (Web Search), `+上传` (Upload), and `发送` (Send).
-   - **Standalone AI Workbench (`--workbench`)**: Can be opened independently at any time via system tray menu or shortcut.
+#### 💡 Streamlined Candidate Box (Pure, Distraction-Free Typing)
+![v1.3.0 Candidate Window](screenshots/test-demo-shima.png)
+- **Left-aligned Preedit Capsule**: Pinned at `x = 34`, floating cleanly above the candidate container without visual drift.
+- **Distraction-Free Architecture**: Removed redundant side buttons (`+` / `📷`) from the primary typing box to eliminate clutter and misclicks. All AI tools are now gracefully integrated into the AI Workbench.
+- **Symmetric Pagination**: Balanced margins with refined pagination chevrons `‹` and `›`.
+
+#### 🤖 Doubao-Style Instant AI Workbench (Summon Anytime with `Ctrl + Alt + Space`)
+![v1.3.0 Standalone AI Workbench](screenshots/test-workbench-clean.png)
+- **Zero Reboot Required**: Works immediately after installation without needing any system reboot.
+- **Instant Global Hotkey `Ctrl + Alt + Space`**: Like Doubao's `Alt + Space`, summon the AI Workbench instantly anytime, anywhere without switching input methods!
+- **Bilingual Comparison Card**: Inner pure white card with `[译文] ⇄ [EN] ●` status pill, bold headline, auto-wrapped body text, middle dashed divider line, and interactive 1-click clipboard copy button `📋`.
+- **Adaptive Dialog Input Bar**: Automatically stretches and resizes with the window width; supports direct keyboard input, Enter to send, Shift+Enter for newline, Esc to close.
+- **Dashed Third-Party Button Mapping Area**: Adaptive container wrapped with `#787878` dashed border containing mapped buttons: `深度思考` (Deep Thinking), `联网` (Web Search), `+上传` (Upload), and `发送` (Send).
+- **Smart Anti-Drift Positioning**: Automatically anchors the window to the visible area of the active foreground window, avoiding misplaced popups across multi-monitor setups.
+
+---
+
+### 2. Version 1.1.x: Settings & AI Bridge Integration
+![v1.1.x Settings & Bridge Scanner](screenshots/settings-v11.1-fixed.png)
+- **Dual AI Configuration**: Direct API Key integration (DeepSeek / OpenAI) and local AI service bridge detection (Ollama, LM Studio).
+- **High-DPI Adaptation**: Scaled dialog rendering preventing button clipping across 100% to 200% Windows display scaling.
+
+---
+
+### 3. Version 1.0.x: Dual-Architecture Foundation
+![v1.0.x Initial Candidate Cards](screenshots/demo-nihao.png)
+- **Dual Input Architecture**: Seamless coordination between Windows TSF text service and low-level keyboard hook.
+- **Hierarchical Bilingual Cards**: Chinese primary candidate with instant multilingual translations.
 
 ---
 

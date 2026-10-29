@@ -13,21 +13,23 @@ All notable changes across all versions are documented in this file, along with 
 - **Standalone Auto-Elevating Installer**: [MC-DualType-1.3.0-Setup.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Setup.exe)
 - **Portable Distribution Archive**: [MC-DualType-1.3.0-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.0/MC-DualType-1.3.0-Portable.zip)
 
-### V1.3 UI Redesign & Adaptive AI Workbench
-- **Pixel-Perfect Candidate Window Redesign (Matches Design Spec `界面设计/链接AI的输入法界面.png`)**:
-  - **Left-Aligned Preedit Pill (`shima`)**: Modern rounded pill tab pinned to `BUBBLE_LEFT_X = 33`, height `40px`, half-floating seamlessly above the candidate container without visual drift.
-  - **Vertical Action Toolbar**: Left vertical button column placed inside the main candidate card container (`x = 8..36`, center `x = 22`):
-    - `+` Button (`offset_y + 88`): 1-click file/document picker for multimodal AI extraction and bilingual translation.
-    - `📷` Button (`offset_y + 137`): 1-click screen crosshair snapshot OCR for instant area capture and translation.
-  - **Horizontal Candidate Cards**: `LEFT_PAD = 65` reserved for side buttons, pagination chevrons `‹` and `›`, smooth rounded corners with unnecessary shoulder regions removed.
-- **Adaptive Bilingual AI Slider & Independent Workbench (`界面设计/链接AI的滑块输入法界面-2.png`)**:
+### V1.3 UI Redesign & Doubao-Style Instant AI Workbench
+- **Streamlined Candidate Window UI**:
+  - Removed redundant sidebar buttons (`+` and `📷`) from the candidate typing box to create a focused, pure, distraction-free typing experience.
+  - Symmetrically balanced card margins (`LEFT_PAD = RIGHT_PAD = 34px`) with left-aligned preedit pill (`BUBBLE_LEFT_X = 34`).
+  - Refined pagination chevrons (`‹` and `›`) with proper horizontal alignment and high-contrast styling.
+- **Doubao-Style Instant Desktop Workflow (Zero Reboot Required)**:
+  - **No System Reboot Needed**: Fully operational immediately upon installation. Eliminated the misconception of requiring a Windows restart.
+  - **Global Hotkey `Ctrl + Alt + Space`**: Instant pop-up of the AI Workbench anytime, anywhere across all Windows applications without switching input methods or pressing `Win + Space`.
+  - **Smart Anti-Drift Positioning**: Intelligent cursor and window positioning algorithm that detects foreground application bounds (in Chrome, WeChat, VS Code, Edge), preventing candidate or assistant windows from drifting to secondary monitors or off-screen corners.
+- **Adaptive Bilingual AI Slider & Independent Workbench**:
   - **Inner Bilingual White Card**: Elegant `#FAF9F8` outer container with inner white rounded card (`#FFFFFF`, border `#D9DED2`, radius `18px`).
   - **Status Indicator**: Header featuring `[译文]` pill, bidirectional icon `⇄`, and `[EN] ●` pill with emerald green connection status indicator light.
   - **Bilingual Comparison View**: Clear bold headlines, clean wrapped paragraph typography, middle dashed divider line, and 1-click clipboard copy button `📋` (with temporary "已复制" feedback).
   - **Adaptive Dialog Input Bar**: Bottom-left conversation input bar stretches horizontally to adapt to any window width; supports direct keyboard input, Enter to send, Shift+Enter for newline, and Esc to close.
   - **Dashed Third-Party Button Mapping Area**: Bottom-right container wrapped in `#787878` dashed border with dynamically calculated adaptive width based on active mapped buttons: `深度思考` (Deep Thinking), `联网` (Web Search), `+上传` (Upload), and `发送` (Send).
 - **Standalone AI Workbench Window (`--workbench`)**:
-  - Dedicated non-blocking Win32 UI window (`McteWorkbench`) accessible from CLI, system tray menu ("打开 AI 工作台"), or by clicking the adaptive input bar / `▢` button.
+  - Dedicated non-blocking Win32 UI window (`McteWorkbench`) accessible from CLI, system tray menu ("打开 AI 工作台"), or via global shortcut `Ctrl + Alt + Space`.
   - Full window resizing support with automatic adaptive layout re-calculation and local persistent conversation history synchronization.
 - **CDP Web/Desktop Bridge & Multimodal OCR**:
   - Auto-detects running local AI clients: Doubao Desktop (CDP `:9444`) and DeepSeek Browser instance (CDP `:9333`).
