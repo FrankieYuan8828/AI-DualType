@@ -6,6 +6,30 @@ All notable changes across all versions are documented in this file, along with 
 
 ---
 
+## [v1.3.1] - 2026-10-29
+
+### 📦 Downloads for v1.3.1
+- **Windows Standard Installer (Recommended)**: [MC-DualType-1.3.1.msi](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.1/MC-DualType-1.3.1.msi)
+- **Standalone Auto-Elevating Installer**: [MC-DualType-1.3.1-Setup.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.1/MC-DualType-1.3.1-Setup.exe)
+- **Portable Distribution Archive**: [MC-DualType-1.3.1-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.1/MC-DualType-1.3.1-Portable.zip)
+
+### Critical Engine Freeze Fixes, Particle Intelligence & Streamlined AI Workbench
+- **Eliminated Severe Typing Freezes (`anxin`, `shili`, `shilalah`)**:
+  - **Root Cause Identified**: When entering non-exact pinyin syllables (e.g. typing `x` after `an` or typing `shil`), the engine fell back to reverse lookup and returned hybrid entries (such as `anorexia 食欲缺乏` or `shillelagh 橡树棍`). The modal particle analyzer `particle::translate_particle_phrase()` previously executed recursive \(O(N^3)\) sub-string decompositions on strings containing spaces and English letters, locking the UI thread for up to 27 seconds.
+  - **Zero-Latency Barrier**: Restricted particle/aspect morphological analysis exclusively to pure Chinese phrases of $\le 6$ characters. 
+  - **Keystroke Performance**: Continuous typing latency reduced from **26.91s to 0.40ms** (over 67,000x faster, ensuring 100% stutter-free continuous typing).
+- **Intelligent Dynamic Learning & Missing Syllable Auto-Adaptation (`kanma` -> `看吗`)**:
+  - The offline dictionary does not maintain `kanma` as a single compound syllable; the engine's Viterbi dynamic segmentation automatically splits it into `kan` (看) and `ma` (吗).
+  - Built-in self-learning engine (`UserDb`) autonomously memorized `kanma` -> `看吗` into persistent local memory (`userdb.json`) upon user confirmation, ranking it to top position on subsequent keystrokes without requiring dictionary rebuilds.
+- **AI Workbench UI & Interaction Overhaul**:
+  - **Removed Distracting Dashed Borders**: Completely eliminated legacy dashed bounding boxes (`draw_dashed_rect`), presenting a clean, modern card aesthetic.
+  - **Enlarged High-Contrast Controls**: Toolbar buttons upgraded to prominent 42px height with bold 15-16px typography (`[+ 上传文件]` and `[发送翻译]`).
+  - **Interactive Hand Pointer (`IDC_HAND`)**: Hand cursor feedback now immediately displays over all interactive elements (buttons, copy icon `📋`, and chevrons).
+  - **Enter Key Instant Transmission**: Input box now captures `VK_RETURN` (`WM_GETDLGCODE` / `DLGC_WANTALLKEYS`) to directly trigger translation queries without needing manual clicks, silencing the default Windows ding sound.
+  - **Live Doubao Chat Synchronization**: Automatically syncs active conversations directly from Doubao Desktop via local CDP bridge on launch, providing instant working feedback.
+
+---
+
 ## [v1.3.0] - 2026-10-29
 
 ### 📦 Downloads for v1.3.0
