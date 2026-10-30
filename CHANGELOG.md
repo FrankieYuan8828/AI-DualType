@@ -13,24 +13,25 @@ All notable changes across all versions are documented in this file, along with 
 - **Standalone Auto-Elevating Installer**: [MC-DualType-Setup-1.3.7.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.7/MC-DualType-Setup-1.3.7.exe)
 - **Portable Distribution Archive**: [MC-DualType-1.3.7-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.7/MC-DualType-1.3.7-Portable.zip)
 
-### AI Workbench Full-Length Scrollable Rendering, Original Text Quote/Copy & Local File Path Bridge
-- **Full-Length Scrollable Rendering & Expand Reading Mode**:
-  - **Eliminated 4-Line Truncation**: Replaced hardcoded `max_lines: 4` with `draw_wrapped_text_scrollable`. DeepSeek in-depth summaries, financial bill breakdowns, tables, and long translations now render in their entirety without being cut off.
-  - **Smooth Mouse Wheel Scrolling (`WM_MOUSEWHEEL`)**: Supports effortless mouse wheel scrolling across both translation and original text panes with GDI `IntersectClipRect` boundary isolation.
-  - **One-Click Reading Expand Toggle (`[ ⛶ 展开阅读 ]` / `[ ◰ 双语对照 ]`)**: Allows users to maximize the AI response card to 100% of the window height for an immersive reading experience.
-- **Original Text Quote & Copying (`[ 💬 引用 ]` & `[ 📋 复制 ]`)**:
-  - Added dedicated `[ 💬 引用 ]` and `[ 📋 复制 ]` action badges right next to the `[ 原文 ]` pill.
-  - Clicking `[ 💬 引用 ]` immediately formats quote context `> 【引用原文】:\n...\n\n请针对上述内容：` into the input bar and auto-focuses the input box.
-  - Clicking `[ 📋 复制 ]` copies the extracted original document text directly to the clipboard with clear visual confirmation.
-- **Rock-Solid Clipboard Copying (`copy_to_clipboard_with_owner`)**:
-  - Resolved clipboard lock conflicts that caused "已复制" notice while pasting old text from another app.
-  - Implemented 15-retry ownership acquisition with window HWND binding, verifying memory allocation and `SetClipboardData` success before showing confirmation.
-- **Eliminated Rigid JSON Formatting Requirements**:
-  - Removed JSON schema directives from prompts. Instructs AI models to output clean, beautifully structured Markdown.
-  - Automatically parses Markdown headings (`#`, `##`, `###`), expands table tabs (`\t`), and cleans inline `**` bold syntax for crisp GDI rendering.
-- **Local File Path Auto-Detection & Local Extraction Bridge**:
-  - Resolved the limitation where cloud/browser AI (DeepSeek Web) cannot access local disk file paths (`C:\...`).
-  - Typing or pasting any local file path into the input bar automatically recognizes the file, extracts its text locally on Windows, and streams the extracted content to DeepSeek for analysis.
+### AI Workbench Full-Length Scrollable Rendering, History Drawer, Stop Task & Zero-Contamination Chat Bridge
+- **Flicker-Free Double Buffering & Smooth Mouse Wheel Scrolling**:
+  - **100% Flicker-Free Double Buffering**: Implemented offscreen double buffering (`CreateCompatibleDC` + `CreateCompatibleBitmap` + `BitBlt`) across the entire workbench window. Eliminates all screen tearing and strobing during mouse wheel scrolling.
+  - **Eliminated 4-Line Truncation**: Replaced hardcoded line caps with `draw_wrapped_text_scrollable`. DeepSeek in-depth summaries, financial bill breakdowns, tables, and long translations now render in their entirety without cutoffs.
+  - **Clean Single Copy Button Layout**: Removed duplicate stacked copy button. Preserves a single, high-contrast `[ 📋 复制 ]` badge on the divider line and clean `[ 💬 引用 ]` badge for original text.
+- **Dedicated Task Stop Button & Immediate Generation Cancellation (`🛑 停止任务`)**:
+  - When an AI request is in flight, the primary action button transforms into a prominent coral red `🛑 停止任务` button.
+  - Clicking `🛑 停止任务` or pressing `Esc` immediately cancels the background thread, dispatches stop generation commands (`stop_generation_js` / Escape) to DeepSeek/Doubao web tabs, and restores UI readiness.
+- **Third-Party Input Bar Zero-Contamination Clearing (`clear_input_js`)**:
+  - Fixed an issue where prompt text entered via CDP remained stuck in DeepSeek or Doubao web input boxes, repeatedly contaminating subsequent chat interactions.
+  - Implemented multi-stage clearing: proactively clears residual drafts before typing, triggers native send buttons with hardware Enter fallbacks, and executes `clear_input_js()` 350ms post-send and upon response completion to guarantee pristine third-party chat inputs.
+- **Integrated Left Conversation History Sidebar (`📜 对话历史`)**:
+  - Added a collapsible, elegant left history drawer displaying past conversation pairs aggregated from `chat.jsonl`.
+  - Includes a `[ ➕ 新建对话 ]` action button to clear current cards and launch a fresh session in one click.
+  - Clicking any history item instantly restores the prompt, AI response, and backend badge into the workbench with full scrollability, copying, and quoting capabilities.
+  - Includes a `[ ◀ ]` collapse button and `[ 📜 历史 ]` toggle to expand or collapse the sidebar on demand.
+- **Original Text Quote & Local File Path Extraction Bridge**:
+  - Clicking `[ 💬 引用 ]` immediately quotes selected text into the input bar with auto-focus.
+  - Automatically detects local file paths (`C:\...`) pasted into the input bar, extracts text locally via native Windows parsers (PDF, DOCX, TXT), and streams content to DeepSeek for analysis.
 
 ---
 
