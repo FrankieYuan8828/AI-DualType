@@ -6,6 +6,29 @@ All notable changes across all versions are documented in this file, along with 
 
 ---
 
+## [v1.3.4] - 2026-10-30
+
+### 📦 Downloads for v1.3.4
+- **Windows Standard Installer (Recommended)**: [MC-DualType-1.3.4.msi](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.4/MC-DualType-1.3.4.msi)
+- **Standalone Auto-Elevating Installer**: [MC-DualType-Setup-1.3.4.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.4/MC-DualType-Setup-1.3.4.exe)
+- **Portable Distribution Archive**: [MC-DualType-1.3.4-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.4/MC-DualType-1.3.4-Portable.zip)
+
+### AI Workbench Input Send Fix (RefCell Re-entrancy) & File Upload Non-Blocking DeepSeek Pipeline
+- **AI Workbench Input Send & Enter Key Fix (Win32 RefCell Re-entrancy Resolution)**:
+  - **Identified Root Cause**: In `workbench.rs`, `get_input_text()` held a mutable borrow of `RefCell<Option<State>>` via `with_state` while dispatching `SendMessageW(st.input, WM_GETTEXTLENGTH)`. Because `st.input` was subclassed with `input_proc`, Windows synchronously called `input_proc` on the exact same thread. `input_proc` then attempted to acquire `with_state(|st| st.input_prev)` to forward messages to the original edit procedure. Due to `RefCell` re-entrancy rules, `try_borrow_mut()` failed, causing `prev` to return `0` and fallback to `DefWindowProcW`, which does not manage edit control buffers and returned 0 length. Consequently, `get_input_text()` always returned `""` (empty string) and early-exited on Enter or Send click!
+  - **Fix**: Replaced `st.input_prev` with a thread-safe `static INPUT_PREV_PROC: AtomicIsize`, decoupling window message processing from internal state locks entirely. Refactored `get_input_text()` and `clear_input_text()` so `with_state` only extracts the `HWND` and immediately releases all borrows before calling Win32 `SendMessageW`. Enter key presses and "发送翻译" button clicks now capture text and dispatch translations instantly.
+  - **Input Focus & Activation**: Added click hit-testing for the input bar and automated `SetFocus(st.input)` upon closing the file picker dialog, ensuring immediate keyboard input readiness.
+- **File Upload Stuck in "Processing" & Never Replying Fix**:
+  - **Identified Root Cause 1 (JSON Escaping Bottleneck)**: When uploading documents via `+ 上传文件`, `translate_text_via_desktop` forced large structured files (e.g., Markdown files with tables, headers, and code snippets) into a strict multi-key JSON schema. DeepSeek-R1 (with deep thinking enabled) struggled to escape newlines, quotes, and symbols into JSON strings, spending 90+ seconds in reasoning and triggering timeout while leaving the UI stuck in "⏳ 处理中...".
+  - **Identified Root Cause 2 (Deep Thinking Stream Confusion)**: In `webchat.rs`, `deepseek_last_reply_js()` selected all `.ds-markdown` elements. DeepSeek renders ongoing reasoning tokens inside `.ds-think-content .ds-markdown`, causing `wait_for_reply` to confuse the active thinking stream with the final answer.
+  - **Fix**:
+    - Streamlined the translation prompt to request direct clean markdown translation without restrictive JSON wrappers.
+    - Updated `deepseek_last_reply_js()` and `deepseek_latest_chat()` to filter out `.ds-think-content`, cleanly isolating the genuine final translation.
+    - Enhanced `deepseek_set_input_js()` and `deepseek_send_js()` with reactive prototype setters and input event triggers, preventing button disabling issues.
+    - Document translations now complete in ~3-5 seconds and update the translation pane smoothly.
+
+---
+
 ## [v1.3.3] - 2026-10-30
 
 ### 📦 Downloads for v1.3.3
