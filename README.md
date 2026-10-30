@@ -3,7 +3,10 @@
 ### 🌏 A Revolutionary Bidirectional Smart Input Method for English Learners & Chinese Beginners
 
 > **A brand-new bidirectional input method designed not only for learning English, but also for foreigners mastering Chinese!**  
-> Type Pinyin to receive "Chinese + multilingual translations" in real time. Type English for instant, intelligent Chinese reverse lookups. Seamlessly blends cross-language typing, bilingual translation, and language learning into a single, zero-barrier experience.
+> • **Two Tailored Editions**: **Chinese Edition** (`🇨🇳 中文版` - default on Chinese Windows for Pinyin typing with multilingual translations) & **English Edition** (`🇺🇸 英文版` - default on English Windows for English typing with Chinese translation following).  
+> • **Smart Installer Language Selection**: Automatically detects Windows UI language (`GetUserDefaultUILanguage()`) and provides interactive edition selection during setup.  
+> • **True Raw English Direct Mode (Zero Interference)**: Press `Shift` or `Ctrl + Space` to toggle into 100% native direct passthrough—zero candidate popup, zero key interception, and zero interference with typing, gaming, or mouse interactions.  
+> • **AI Workbench & Agent Skills**: Global hotkey `Ctrl + Alt + Space` opens an instant Doubao-style bilingual workbench with dynamic Agent skills (`翻译` Translate, `总结` Summarize, `解释` Explain, `对话` Chat, `朗读` SAPI Speech).
 
 ![MC-DualType Banner](image.png)
 
@@ -57,7 +60,26 @@ Here is the complete version-by-version release breakdown with detailed upgrade/
 
 ## ✨ Core Features & Innovations
 
-### 1. Bidirectional Typing & Learning
+### 1. Two Dedicated Language Editions & Smart Installer Detection
+MC-DualType provides two distinct, purpose-tailored editions to deliver the optimal native typing experience for both Chinese and English speakers:
+- 🇨🇳 **Chinese Edition (`中文版`)** *(Default on Chinese Windows `zh-CN`, `zh-TW`, `zh-HK`)*:
+  - **Default Mode**: Smart Chinese Pinyin input. Typing pinyin displays Chinese characters with English and multilingual translations dynamically following.
+  - **English Toggle**: Tap `Shift` or press `Ctrl + Space` to instantly switch to **Raw English Direct Passthrough** (zero key interception, zero mouse interference).
+- 🇺🇸 **English Edition (`英文版`)** *(Default on English/International Windows)*:
+  - **Default Mode**: Smart English input for English speakers learning Chinese. Typing English words displays English with Chinese translation candidates following.
+  - **Direct Toggle**: Tap `Shift` or press `Ctrl + Space` to instantly switch to **Raw English Direct Passthrough**.
+- 🛠️ **Smart Windows Locale Detection & Setup Selector**:
+  - The installer automatically detects the current Windows UI language using `GetUserDefaultUILanguage()`.
+  - `Setup.exe` prompts the user with an interactive edition selection dialog with system recommendations.
+  - You can also switch editions anytime via the system tray menu (`切换为：英文版` / `切换为：中文版`) or Settings (`设置 -> 🌐 跟随语言设置`).
+
+### 2. True Raw English Direct Passthrough (`direct_mode` - Zero Typing & Mouse Interference)
+In standard IMEs, switching to "English mode" often still intercepts keys, displays floating candidate windows, or delays keystrokes, disrupting gaming, programming, and mouse interactions:
+- **100% Native Bypass**: When switched to raw English direct mode (via single-tap `Shift`, `Ctrl + Space`, or `Ctrl + Alt + P`), the IME hook and TSF text service enter complete passthrough mode (`hook::pass_through` / TSF returns `FALSE`).
+- **Zero Interception**: All keystrokes (`a-z`, `0-9`, symbols, Space, Enter, Backspace, Esc, function keys, and global shortcuts) reach the target application directly.
+- **Hidden UI & Zero Lag**: The candidate window remains completely hidden, producing zero visual distraction and zero mouse or cursor interference—identical to Windows' native US English keyboard.
+
+### 3. Bidirectional Typing & Learning
 - **Type Pinyin, Get Chinese + Multilingual Translations**:
   ```text
   nihao
@@ -75,7 +97,21 @@ Here is the complete version-by-version release breakdown with detailed upgrade/
 - **Type English, Instant Chinese Reverse Lookup**:
   - Type `hello`, `hallo`, `computer`, or `china` to immediately receive Chinese candidates (`你好`, `计算机`, `中国`…).
 
-### 2. Long Pinyin Sentence Segmentation
+### 4. Doubao-Style Dynamic Agent Skills & AI Workbench
+Summon the standalone AI Workbench anytime using global hotkey **`Ctrl + Alt + Space`**:
+- **Interactive Agent Skills**: Dynamic skill pills in the header:
+  - `[ 🌐 翻译 ]` (Translate): High-speed streaming translation into target language.
+  - `[ 📝 总结 ]` (Summarize): Key takeaways and structured overview.
+  - `[ 💡 解释 ]` (Explain): Deep contextual explanation and vocabulary breakdown.
+  - `[ 💬 对话 ]` (Chat): Direct AI interactive dialogue.
+  - `[ 🔊 朗读 ]` (Speech): Built-in offline Windows SAPI `SpVoice` text-to-speech engine (`🔊 朗读` / `⏹ 停止`).
+- **Dynamic File Parsing & Translation**: Drag & drop or upload PDF, Word (.docx), Excel (.xlsx), TXT, and Markdown files for immediate parsing and bilingual streaming translation.
+
+### 5. Dual-Channel High-Fidelity Rich Copying (Markdown + CF_HTML)
+- Solves clipboard plain-text formatting loss. One-click copy `📋` writes both clean Markdown (`CF_UNICODETEXT`) and styled HTML (`HTML Format` via byte-accurate CF_HTML packets).
+- Pasting into Microsoft Word, WeChat, Feishu, Outlook, Notion, or browsers preserves headers, bold text, bullet lists, and code blocks with full fidelity.
+
+### 6. Long Pinyin Sentence Segmentation
 Full sentence segmentation using frequency-weighted Viterbi k-best search:
 ```text
 bukeyitihuan        → 1 不可以替换   2 不可一替换 …
@@ -102,7 +138,11 @@ xiexienile          → 1 谢谢你了
 
 ## 🎨 UI Architecture, AI Workbench & Version Screenshots
 
-### 1. Version 1.3.0 (Latest Release): Streamlined Candidate UI & Instant AI Workbench
+### 1. Version 1.3.6 (Latest Release): Edition Architecture & Raw English Passthrough
+
+#### 🌐 Dedicated Language Editions & Smart Installer
+- **Locale-Aware Installer**: Automatically queries Windows language (`GetUserDefaultUILanguage()`). Interactive `Setup.exe` prompts users to choose between **Chinese Edition** and **English Edition** with system-recommended badges.
+- **True Raw English Direct Mode**: Tapping `Shift` or pressing `Ctrl + Space` completely bypasses the IME (`direct_mode`), passing all keys directly to the system without candidate windows or keyboard/mouse interference.
 
 #### 💡 Streamlined Candidate Box (Pure, Distraction-Free Typing)
 ![v1.3.0 Candidate Window](screenshots/test-demo-shima.png)
@@ -110,14 +150,15 @@ xiexienile          → 1 谢谢你了
 - **Distraction-Free Architecture**: Removed redundant side buttons (`+` / `📷`) from the primary typing box to eliminate clutter and misclicks. All AI tools are now gracefully integrated into the AI Workbench.
 - **Symmetric Pagination**: Balanced margins with refined pagination chevrons `‹` and `›`.
 
-#### 🤖 Doubao-Style Instant AI Workbench (Summon Anytime with `Ctrl + Alt + Space`)
+#### 🤖 Doubao-Style Instant AI Workbench & Agent Skills (`Ctrl + Alt + Space`)
 ![v1.3.0 Standalone AI Workbench](screenshots/test-workbench-clean.png)
 - **Zero Reboot Required**: Works immediately after installation without needing any system reboot.
 - **Instant Global Hotkey `Ctrl + Alt + Space`**: Like Doubao's `Alt + Space`, summon the AI Workbench instantly anytime, anywhere without switching input methods!
-- **Bilingual Comparison Card**: Inner pure white card with `[译文] ⇄ [EN] ●` status pill, bold headline, auto-wrapped body text, middle dashed divider line, and interactive 1-click clipboard copy button `📋`.
+- **Dynamic Agent Skills**: Interactive skill bar with `[ 🌐 翻译 ]`, `[ 📝 总结 ]`, `[ 💡 解释 ]`, `[ 💬 对话 ]`, and native offline Windows SAPI `[ 🔊 朗读 ]`.
+- **Dual-Channel High-Fidelity Copying**: Dual-writes authentic Markdown (`CF_UNICODETEXT`) and styled HTML (`HTML Format`), preserving rich typography when pasting into Microsoft Word, WeChat, Feishu, Outlook, Notion, and browsers.
+- **Bilingual Comparison Card**: Inner pure white card with `[译文] ⇄ [EN] ●` status pill, bold headline, auto-wrapped body text, middle divider line, and interactive 1-click clipboard copy button `📋`.
 - **Adaptive Dialog Input Bar**: Automatically stretches and resizes with the window width; supports direct keyboard input, Enter to send, Shift+Enter for newline, Esc to close.
-- **Dashed Third-Party Button Mapping Area**: Adaptive container wrapped with `#787878` dashed border containing mapped buttons: `深度思考` (Deep Thinking), `联网` (Web Search), `+上传` (Upload), and `发送` (Send).
-- **Smart Anti-Drift Positioning**: Automatically anchors the window to the visible area of the active foreground window, avoiding misplaced popups across multi-monitor setups.
+- **Multi-Format File Translation Pipeline**: Upload and translate PDF, Word (.docx), Excel (.xlsx), TXT, and Markdown files with dynamic live sync.
 
 ---
 
