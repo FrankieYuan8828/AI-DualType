@@ -6,6 +6,34 @@ All notable changes across all versions are documented in this file, along with 
 
 ---
 
+## [v1.3.7] - 2026-10-30
+
+### 📦 Downloads for v1.3.7
+- **Windows Standard Installer (Recommended)**: [MC-DualType-1.3.7.msi](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.7/MC-DualType-1.3.7.msi)
+- **Standalone Auto-Elevating Installer**: [MC-DualType-Setup-1.3.7.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.7/MC-DualType-Setup-1.3.7.exe)
+- **Portable Distribution Archive**: [MC-DualType-1.3.7-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.7/MC-DualType-1.3.7-Portable.zip)
+
+### AI Workbench Full-Length Scrollable Rendering, Original Text Quote/Copy & Local File Path Bridge
+- **Full-Length Scrollable Rendering & Expand Reading Mode**:
+  - **Eliminated 4-Line Truncation**: Replaced hardcoded `max_lines: 4` with `draw_wrapped_text_scrollable`. DeepSeek in-depth summaries, financial bill breakdowns, tables, and long translations now render in their entirety without being cut off.
+  - **Smooth Mouse Wheel Scrolling (`WM_MOUSEWHEEL`)**: Supports effortless mouse wheel scrolling across both translation and original text panes with GDI `IntersectClipRect` boundary isolation.
+  - **One-Click Reading Expand Toggle (`[ ⛶ 展开阅读 ]` / `[ ◰ 双语对照 ]`)**: Allows users to maximize the AI response card to 100% of the window height for an immersive reading experience.
+- **Original Text Quote & Copying (`[ 💬 引用 ]` & `[ 📋 复制 ]`)**:
+  - Added dedicated `[ 💬 引用 ]` and `[ 📋 复制 ]` action badges right next to the `[ 原文 ]` pill.
+  - Clicking `[ 💬 引用 ]` immediately formats quote context `> 【引用原文】:\n...\n\n请针对上述内容：` into the input bar and auto-focuses the input box.
+  - Clicking `[ 📋 复制 ]` copies the extracted original document text directly to the clipboard with clear visual confirmation.
+- **Rock-Solid Clipboard Copying (`copy_to_clipboard_with_owner`)**:
+  - Resolved clipboard lock conflicts that caused "已复制" notice while pasting old text from another app.
+  - Implemented 15-retry ownership acquisition with window HWND binding, verifying memory allocation and `SetClipboardData` success before showing confirmation.
+- **Eliminated Rigid JSON Formatting Requirements**:
+  - Removed JSON schema directives from prompts. Instructs AI models to output clean, beautifully structured Markdown.
+  - Automatically parses Markdown headings (`#`, `##`, `###`), expands table tabs (`\t`), and cleans inline `**` bold syntax for crisp GDI rendering.
+- **Local File Path Auto-Detection & Local Extraction Bridge**:
+  - Resolved the limitation where cloud/browser AI (DeepSeek Web) cannot access local disk file paths (`C:\...`).
+  - Typing or pasting any local file path into the input bar automatically recognizes the file, extracts its text locally on Windows, and streams the extracted content to DeepSeek for analysis.
+
+---
+
 ## [v1.3.6] - 2026-10-30
 
 ### 📦 Downloads for v1.3.6
