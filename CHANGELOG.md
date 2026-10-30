@@ -6,6 +6,34 @@ All notable changes across all versions are documented in this file, along with 
 
 ---
 
+## [v1.3.5] - 2026-10-30
+
+### 📦 Downloads for v1.3.5
+- **Windows Standard Installer (Recommended)**: [MC-DualType-1.3.5.msi](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.5/MC-DualType-1.3.5.msi)
+- **Standalone Auto-Elevating Installer**: [MC-DualType-Setup-1.3.5.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.5/MC-DualType-Setup-1.3.5.exe)
+- **Portable Distribution Archive**: [MC-DualType-1.3.5-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.5/MC-DualType-1.3.5-Portable.zip)
+
+### Agent Skills Architecture, Native SAPI Speech & Dual-Channel High-Fidelity Rich Formatting
+- **Agent Skills Architecture in AI Workbench**:
+  - **Dynamic Agent Skill Bar**: Integrated interactive skill pills into the workbench top header: `[ 🌐 翻译 ]` (Translate), `[ 📝 总结 ]` (Summarize), `[ 💡 解释 ]` (Explain), `[ 💬 对话 ]` (Chat), and `[ 🔊 朗读 ]` (Speech).
+  - **Task-Tailored Prompt Engine**: Decoupled AI invocation into structured skills. Each skill automatically crafts optimal prompt engineering directives adapted to DeepSeek, Doubao, or cloud API models.
+  - **Context Re-execution on Skill Switch**: Clicking any skill immediately switches the active mode and intelligently re-executes the new task on either the input text or the loaded document without retyping.
+  - **Dynamic Action Button Adaptation**: The primary action button at the bottom right dynamically updates its label according to the active skill (`发送翻译`, `生成总结`, `深度解释`, `发送对话`), providing clear visual clarity.
+- **Native Windows SAPI Offline Speech Synthesis (`[ 🔊 朗读 ]` / `[ ⏹ 停止 ]`)**:
+  - **Zero-Dependency Offline TTS**: Built-in Windows SAPI `SpVoice` speech synthesis engine in `core/src/speech.rs`. Requires zero network connection, zero third-party token, and zero API keys.
+  - **Non-Blocking Interruptible Playback**: Executes speech asynchronously in an isolated process. Clicking `🔊 朗读` begins reading either the translation or the original text while switching the pill to green `[ ⏹ 停止 ]`; clicking again instantly interrupts and stops speech.
+- **Dual-Channel High-Fidelity Rich Clipboard Copying (Markdown + CF_HTML)**:
+  - **Resolved Flat Text Stripping**: Fixed the issue where copying AI output stripped formatting into unstyled text. Previously, only `CF_UNICODETEXT` was written to the clipboard.
+  - **Windows `CF_HTML` Packet Generator**: Created `core/src/format.rs` with a custom Markdown-to-HTML converter and byte-accurate Windows Clipboard `HTML Format` header generator with `StartHTML`, `EndHTML`, `StartFragment`, and `EndFragment` offset calculations.
+  - **Dual-Format Clipboard Dispatch**: In `core/src/window.rs`, `copy_to_clipboard` registers both `CF_UNICODETEXT` (authentic Markdown) and `HTML Format` (styled HTML). Pasting into Microsoft Word, WeChat, Feishu, Outlook, Notion, or browsers preserves headers, bold text, code blocks, and bullet lists; pasting into code editors (VS Code, Notepad) outputs clean Markdown.
+  - **Authentic Markdown Extraction**: Upgraded `deepseek_last_reply_js()` and `doubao_last_reply_js()` to extract authentic Markdown syntax directly from React Fiber `memoizedProps` before falling back to `innerText`.
+- **Card Typography & Visual Structure Optimization**:
+  - **Paragraph Breathing Room**: Enhanced `draw_wrapped_text` to preserve empty lines (`\n\n`) as half-line height spacers (`line_h / 2`), eliminating dense blocks of text.
+  - **Bullet List Indentation**: Indents unordered list items (`- `, `* `, `• `) by 14px for structured visual hierarchy.
+  - **Hand Cursor Hit-Testing**: Registered `IDC_HAND` cursor feedback across all skill pills, language selectors, speech pills, and action buttons.
+
+---
+
 ## [v1.3.4] - 2026-10-30
 
 ### 📦 Downloads for v1.3.4
