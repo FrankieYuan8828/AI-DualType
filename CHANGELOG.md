@@ -6,6 +6,28 @@ All notable changes across all versions are documented in this file, along with 
 
 ---
 
+## [v1.3.3] - 2026-10-30
+
+### 📦 Downloads for v1.3.3
+- **Windows Standard Installer (Recommended)**: [MC-DualType-1.3.3.msi](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.3/MC-DualType-1.3.3.msi)
+- **Standalone Auto-Elevating Installer**: [MC-DualType-Setup-1.3.3.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.3/MC-DualType-Setup-1.3.3.exe)
+- **Portable Distribution Archive**: [MC-DualType-1.3.3-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.3/MC-DualType-1.3.3-Portable.zip)
+
+### Interactive Target Language Selector, Win32 Input Send Fix & Multi-Encoding File Parser
+- **Interactive Target Language Selector (`[EN ▾]`) & Dynamic Prompt Injection**:
+  - Transformed the static target language badge into a fully interactive Win32 popup menu (`[EN ▾]`). Users can click the language pill to switch target translation languages on the fly: English (EN), Chinese (ZH), Japanese (JA), German (DE), French (FR), Spanish (ES), Korean (KO), and Russian (RU).
+  - Dynamically synthesizes the AI translation prompt according to the selected target language (`请将以下内容准确翻译成【{target_display}】（语言代码: {target_lang}），只输出译文，格式保持整洁：\n{text}`), ensuring direct, high-precision translations without unnecessary conversational fluff.
+- **Win32 Input Retrieval & Send Dispatch Fix**:
+  - **Identified Root Cause**: In subclassed Win32 child EDIT controls, `GetWindowTextLengthW` returned 0, causing `send_current_input()` to treat typed text as empty and exit early.
+  - **Fix**: Replaced text retrieval with direct message dispatches: `SendMessageW(hwnd, WM_GETTEXTLENGTH)` and `SendMessageW(hwnd, WM_GETTEXT)`. Input clearing now dispatches `SendMessageW(hwnd, WM_SETTEXT)`. Enter key and the "发送翻译" button now fire immediately and synchronously.
+- **Universal Multi-Encoding Document Parser (GBK / ANSI / UTF-8 / GB18030)**:
+  - **Identified Root Cause**: Document files (`.txt`, `.pdf`, `.md`) created on Chinese Windows systems are often encoded in GBK / ANSI. Standard Rust `fs::read_to_string` rejected non-UTF-8 bytes with "stream did not contain valid UTF-8", triggering "打开文件失败".
+  - **Fix**: Implemented adaptive multi-encoding decoding (`decode_text_bytes`) testing UTF-8 -> Code Page 936 (GBK) -> System ACP -> Lossy fallback. Non-UTF-8 text files and documents now open and parse with zero corruption or failure.
+- **Dynamic File Translation Display**:
+  - Uploading a file via `+ 上传文件` immediately populates the "原文" (Original Text) pane with the filename and document preview, dispatches the content to DeepSeek or Doubao, and streams the translated output into the "译文" (Translation) pane in real time.
+
+---
+
 ## [v1.3.2] - 2026-10-30
 
 ### 📦 Downloads for v1.3.2
