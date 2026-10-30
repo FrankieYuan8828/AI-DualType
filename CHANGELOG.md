@@ -6,6 +6,33 @@ All notable changes across all versions are documented in this file, along with 
 
 ---
 
+## [v1.3.6] - 2026-10-30
+
+### 📦 Downloads for v1.3.6
+- **Windows Standard Installer (Recommended)**: [MC-DualType-1.3.6.msi](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.6/MC-DualType-1.3.6.msi)
+- **Standalone Auto-Elevating Installer**: [MC-DualType-Setup-1.3.6.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.6/MC-DualType-Setup-1.3.6.exe)
+- **Portable Distribution Archive**: [MC-DualType-1.3.6-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.6/MC-DualType-1.3.6-Portable.zip)
+
+### Installer Language Edition Selection & Raw English Direct Passthrough (Shift & Ctrl+Space Zero Interference)
+- **Installer Language Edition Selection & Windows System UI Auto-Detection**:
+  - **Language Edition Architecture**: Officially split the input experience into two tailored editions:
+    - **🇨🇳 Chinese Edition (中文版 - Default on Chinese Windows)**: Designed for Chinese speakers learning English and typing bilingual text. Default mode is Pinyin input (showing Chinese candidate cards with English and multilingual translations). Tapping Shift or Ctrl+Space toggles to raw native English direct input.
+    - **🇺🇸 English Edition (英文版 - Default on English Windows)**: Designed for English native speakers learning Chinese. Default mode is smart English input (typing English words produces candidate cards with Chinese translations). Tapping Shift or Ctrl+Space toggles to raw native English direct input.
+  - **Automatic Windows Locale Detection**: Automatically queries Windows user UI language (`GetUserDefaultUILanguage()`); defaults to Chinese edition on Chinese Windows (`zh-CN`, `zh-TW`, `zh-HK`), and English edition on English/international Windows (`en-US`, etc.).
+  - **Interactive Setup Prompt**: `Setup.exe` prompts the user upon installation to choose between Chinese and English editions with clear system recommendations, and supports silent `-Edition Chinese|English` deployment.
+- **True Raw English Direct Passthrough (Eliminated Keyboard & Mouse Typing Interference)**:
+  - **Identified Root Cause**: In previous versions, switching to "English mode" only toggled `ascii_mode`, but the engine still intercepted keystrokes, consumed Space and Enter, and popped up candidate cards. This made normal English typing, programming, gaming, and mouse interactions severely interfered with.
+  - **100% Native Passthrough**: Implemented `direct_mode` in both the hook engine and TSF text service. In raw English direct mode, all keystrokes (`a-z`, `0-9`, symbols, Space, Enter, Backspace, Esc, function keys) completely bypass the IME and pass directly to the target application (`hook::pass_through` / TSF returns `FALSE`).
+  - **Zero Visual & Interaction Overhead**: In raw direct mode, candidate windows remain completely hidden, no keystrokes are intercepted, and mouse interactions operate completely undisturbed, behaving identically to the native Windows US English keyboard.
+- **Dual Hotkey Toggle (Shift & Ctrl+Space)**:
+  - Supported both short single-tap on `Shift` and classic Windows `Ctrl + Space` to toggle between the active smart bilingual mode and raw English direct passthrough.
+  - Displays instant subtle HUD indicator: `🔤 英文（原始直接输入）` / `🇨🇳 中文模式（多语跟随）` / `🇺🇸 英文模式（中文跟随）`.
+- **Anytime Edition Switching**:
+  - Added 1-click edition switching in the system tray menu (`切换为：英文版` / `切换为：中文版`).
+  - Added dedicated Language Edition radio buttons in Settings (`设置 -> 🌐 跟随语言设置 -> 语言版本`).
+
+---
+
 ## [v1.3.5] - 2026-10-30
 
 ### 📦 Downloads for v1.3.5
