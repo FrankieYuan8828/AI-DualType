@@ -6,6 +6,32 @@ All notable changes across all versions are documented in this file, along with 
 
 ---
 
+## [v1.3.2] - 2026-10-30
+
+### 📦 Downloads for v1.3.2
+- **Windows Standard Installer (Recommended)**: [MC-DualType-1.3.2.msi](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.2/MC-DualType-1.3.2.msi)
+- **Standalone Auto-Elevating Installer**: [MC-DualType-Setup-1.3.2.exe](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.2/MC-DualType-Setup-1.3.2.exe)
+- **Portable Distribution Archive**: [MC-DualType-1.3.2-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.2/MC-DualType-1.3.2-Portable.zip)
+
+### DeepSeek Automated Send & AI File Translation Pipeline Overhaul
+- **DeepSeek Automated Message Dispatch & Send Automation**:
+  - **Identified Root Cause**: In modern DeepSeek web frontends, dispatching synthetic `KeyboardEvent` (Enter) on textareas is ignored by the reactive framework. Without clicking the circular blue send button (`.ds-button--circle`), messages remained stuck in the input box indefinitely.
+  - **Full Automation**: Implemented automated circular send button detection and dispatch in `deepseek_send_js()`, synchronized with reactive `input` and `change` events. AI query and translation responses now arrive reliably in ~1.5 seconds.
+- **End-to-End File Translation Pipeline (`+ 上传文件`)**:
+  - Completely revitalized the file upload workflow. Clicking `+ 上传文件` launches the system explorer dialog via an STA COM-initialized thread with CBT focus elevation.
+  - Full support for multi-format text and document extraction (`.pdf`, `.docx`, `.xlsx`, `.txt`, `.md`, `.json`, `.csv`) as well as image OCR (`.png`, `.jpg`, `.bmp`, `.webp`).
+  - Selected file name and extracted preview text are immediately rendered onto the workbench card, dispatched to the active AI backend (DeepSeek / Doubao), and the complete bilingual translation is returned and updated directly on screen.
+- **Live AI Workspace Dynamic Sync**:
+  - Removed outdated static placeholder articles. When opening the AI Workbench, it dynamically pulls the latest authentic conversation from the connected AI backend (DeepSeek or Doubao), reflecting the actual conversational context.
+- **Mouse Cursor & Focus Normalization**:
+  - Fixed missing arrow cursor (`IDC_ARROW`) in window class definition.
+  - Added responsive hand pointer (`IDC_HAND`) over all interactive buttons and copy controls, while maintaining native I-beam cursor (`IDC_IBEAM`) inside the conversation edit field.
+- **Clean Aesthetic & High-Legibility UI**:
+  - Replaced dashed dividers with clean, subtle solid separation lines.
+  - Enlarged bottom toolbar and buttons (height 44px, width 120px) with bold high-contrast typography, ensuring maximum legibility and clickability.
+
+---
+
 ## [v1.3.1] - 2026-10-29
 
 ### 📦 Downloads for v1.3.1
