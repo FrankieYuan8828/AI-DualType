@@ -38,6 +38,8 @@ All notable changes across all versions are documented in this file, along with 
 - **Original Text Quote & Local File Path Extraction Bridge**:
   - Clicking `[ 💬 引用 ]` immediately quotes selected text into the input bar with auto-focus.
   - Automatically detects local file paths (`C:\...`) pasted into the input bar, extracts text locally via native Windows parsers (PDF, DOCX, TXT), and streams content to DeepSeek for analysis.
+- **Special Toolchain Acknowledgments (特别鸣谢)**:
+  - Deep appreciation to **Mora Build** and **Google Antigravity IDE** for providing the end-to-end full-lifecycle agentic AI programming, autonomous code generation, automated regression testing, and whole-process software build orchestration throughout the development of MC-DualType (全程编程构建程序).
 
 ---
 

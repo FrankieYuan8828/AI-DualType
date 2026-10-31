@@ -259,15 +259,15 @@ packaging/                   MSI & Standalone Setup WiX toolchain
 
 ### Build Commands
 ```powershell
-# 1. Run all workspace unit tests (132 tests)
+# 1. Run all workspace unit tests (134 tests)
 cargo test --workspace
 
 # 2. Build release binaries (x64 & x86)
 cargo build --release -p mcte -p mcte-tsf
 cargo build --release -p mcte-tsf --target i686-pc-windows-msvc --lib
 
-# 3. Build MSI & Setup installers into dist/v1.3.0
-powershell -ExecutionPolicy Bypass -File tools\build_msi.ps1 -Version 1.3.0
+# 3. Build MSI & Setup installers into dist/v1.3.7
+powershell -ExecutionPolicy Bypass -File tools\build_msi.ps1 -Version 1.3.7
 ```
 
 ---
@@ -276,7 +276,11 @@ powershell -ExecutionPolicy Bypass -File tools\build_msi.ps1 -Version 1.3.0
 
 This project is open-sourced under the **MIT License**.
 
-**Upstream Credits & References**:
+### 🙏 Special Acknowledgments (特别鸣谢)
+- **Mora Build**: Sincere gratitude to **Mora Build** for providing the core automated engineering build framework, packaging pipeline, and continuous delivery orchestration.
+- **Google Antigravity IDE**: Heartfelt appreciation to **Google Antigravity IDE** for powering the end-to-end, full-lifecycle agentic AI programming, autonomous architectural design, whole-process code construction, automated regression testing, and release delivery throughout the development of MC-DualType (全程编程构建程序).
+
+### 📚 Upstream Credits & References
 - **TypeAnything**: Product concept and packaging inspiration.
 - **librime / Weasel**: TSF and Chinese pinyin engine paradigms.
 - **CC-CEDICT / rime-essay / phrase-pinyin-data**: Lexical dictionary and frequency data.
