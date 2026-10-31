@@ -14,6 +14,12 @@ All notable changes across all versions are documented in this file, along with 
 - **Portable Distribution Archive**: [MC-DualType-1.3.7-Portable.zip](https://github.com/FrankieYuan8828/MC-DualType/releases/download/v1.3.7/MC-DualType-1.3.7-Portable.zip)
 
 ### AI Workbench Full-Length Scrollable Rendering, History Drawer, Stop Task & Zero-Contamination Chat Bridge
+- **Pinyin Phonology Accuracy & Candidate Frequency Ranking Fix (`he` = `和` / `ta` = `他`)**:
+  - **Eliminated Cross-Lingual English Spelling Pollution**: Fixed an issue where English word "he" (= "他") was recorded into the Chinese pinyin spelling database during English mode or reverse lookup, improperly catapulting `他` (pinyin `ta`) to Candidate 1 for Chinese pinyin `he` over standard character `和`.
+  - **Single-Character Pinyin Verification (`Dict::contains_exact`)**: Added strict pinyin validation for single Chinese characters against the 160,000+ entry standard dictionary. Single characters whose native pronunciations mismatch the typed pinyin (e.g., `他` under `he`, `我` under `i`, `你` under `you`) are strictly barred from entering learned pinyin candidates.
+  - **Auto-Cleansing of Historical Corrupted Mappings (`UserDb::remove_spelling`)**: Automatically scans and purges legacy polluted single-character mappings from `userdb.json` upon engine initialization.
+  - **Isolated English Mode Learning (`UserDb::record_word_usage`)**: In English mode (`ascii_mode`), selections now update word frequency counters and contextual bigrams exclusively, never polluting the Chinese IME `spellings` table with English words.
+  - **Natural Frequency & User Habit Prioritization**: High-frequency everyday words (`he` -> `和`, `ta` -> `他`, `you` -> `有`, `ni` -> `你`) and multi-character phrases now consistently rank first in accordance with native Chinese typing habits.
 - **Flicker-Free Double Buffering & Smooth Mouse Wheel Scrolling**:
   - **100% Flicker-Free Double Buffering**: Implemented offscreen double buffering (`CreateCompatibleDC` + `CreateCompatibleBitmap` + `BitBlt`) across the entire workbench window. Eliminates all screen tearing and strobing during mouse wheel scrolling.
   - **Eliminated 4-Line Truncation**: Replaced hardcoded line caps with `draw_wrapped_text_scrollable`. DeepSeek in-depth summaries, financial bill breakdowns, tables, and long translations now render in their entirety without cutoffs.
